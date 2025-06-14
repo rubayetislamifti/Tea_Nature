@@ -15,6 +15,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <link rel="stylesheet" href="{{asset('admin/assets/vendors/core/core.css')}}">
 
@@ -109,12 +110,12 @@
                                         <p class="tx-16 fw-bolder">
                                             @if(isset($admins))
                                                 {{$admins->name}}
-                                            @else
+                                            @elseif(isset($user))
                                                 Demo Account
                                             @endif</p>
                                         <p class="tx-12 text-muted">@if(isset($admins))
                                                 {{$admins->email}}
-                                            @else
+                                            @elseif(isset($user))
                                                 rubayetislam16@gmail.com
                                             @endif</p>
                                     </div>
@@ -454,6 +455,14 @@
     </div>
 
     @yield('content')
+
+    <footer class="footer border-top">
+        <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between py-3 small">
+            <p class="text-muted mb-1 mb-md-0">Copyright © 2023 <a href="https://www.teanature.com" target="_blank">TeanaturE</a>.</p>
+            <p class="text-muted mb-1 mb-md-0">Developed By <a href="https://www.trodev.com" target="_blank">Trodev</a>.</p>
+            <p class="text-muted">Handcrafted With <i class="mb-1 text-primary ms-1 icon-sm" data-feather="heart">Trodev</i></p>
+        </div>
+    </footer>
 
 </div>
 

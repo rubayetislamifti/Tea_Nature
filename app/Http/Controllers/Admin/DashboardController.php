@@ -41,27 +41,55 @@ class DashboardController extends Controller
 //        dd($admin);
         $category = Category::get();
 
-        return view('Category.addCategory',['id'=>$user,'admin'=>$admin,'category'=>$category]);
+        return view('admin.Category.addCategory',['id'=>$user,'admin'=>$admin,'category'=>$category]);
     }
 
     public function insert_category(Request $request)
     {
-        $pic = $request->file('image');
-        if ($pic) {
-            $originalname = $pic->getClientOriginalName();
-            $path = $pic->storeAs('public/category', $originalname);
-            $path = str_replace('public/', '', $path);
-            $path2 = $pic->storeAs('category', $originalname, 'shared');
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'age_select' => 'required'
+        ]);
 
-            Category::create([
-                'name' => $request->input('name'),
-                'image' => $path,
-                'status' => $request->input('age_select')
-            ]);
+        try {
+            if ($request->hasFile('image')) {
+                $pic = $request->file('image');
 
-            return redirect()->back();
+                if ($pic->isValid()) {
+                    $imageName = time() . '_' . $pic->getClientOriginalName();
+
+                    $pic->move(public_path('category'), $imageName);
+
+                    $imagePath = 'category/' . $imageName;
+
+                    Category::create([
+                        'name' => $request->input('name'),
+                        'image' => $imageName,
+                        'status' => $request->input('age_select')
+                    ]);
+
+                    return redirect()->back()->with('success', 'Category added successfully.');
+                } else {
+                    return redirect()->back()->with('error', 'Uploaded image is not valid.');
+                }
+            } else {
+                return redirect()->back()->with('error', 'No image uploaded.');
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Something went wrong: ' . $e->getMessage());
+        }
+        catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()
+                ->withErrors($e->validator)
+                ->withInput();
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', 'Something went wrong: ' . $e->getMessage())
+                ->withInput();
         }
     }
+
 
     public function display_category()
     {
@@ -71,7 +99,7 @@ class DashboardController extends Controller
 
         $admin = Admin::where('id',$user)->first();
 
-        return view('Category.displayCategory',['id'=>$user,'category'=>$category,'admin'=>$admin]);
+        return view('admin.Category.displayCategory',['id'=>$user,'category'=>$category,'admin'=>$admin]);
     }
 
     public function update_category()
@@ -84,43 +112,66 @@ class DashboardController extends Controller
 
         $admin = Admin::where('id',$user)->first();
 
-        return view('Category.updateCategory',['id'=>$user,'category'=>$category,'admin'=>$admin]);
+        return view('admin.Category.updateCategory',['id'=>$user,'category'=>$category,'admin'=>$admin]);
     }
 
     public function category_update(Request $request)
     {
-        $pic = $request->file('image');
-        $categoryId = $request->input('category_id');
-        if ($pic) {
-            $originalname = $pic->getClientOriginalName();
-
-            $category = Category::find($categoryId);
-
-            if ($category && $category->image) {
-                Storage::delete('public/' . $category->image);
-                Storage::disk('shared')->delete('public/' . $category->image);
-            }
-
-            $path = $pic->storeAs('public/category', $originalname);
-            $path = str_replace('public/', '', $path);
-            $path2 = $pic->storeAs('category', $originalname, 'shared');
-
-
-            $category->update([
-                'image' => $path,
-            ]);
-
-            return redirect()->back();
-        }
-
-        Category::where('id',$categoryId)->update([
-            'name' => $request->input('name'),
-            'status' => $request->input('age_select')
+        $request->validate([
+            'category_id' => 'required|exists:categories,id',
+            'name' => 'sometimes|required|string|max:255',
+            'age_select' => 'required',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        return redirect()->back();
+        try {
+            $categoryId = $request->input('category_id');
+            $category = Category::findOrFail($categoryId);
 
+            $data = [
+                'name' => $request->input('name'),
+                'status' => $request->input('age_select'),
+            ];
+
+            if ($request->hasFile('image')) {
+                $pic = $request->file('image');
+
+                if ($pic->isValid()) {
+                    $originalname = time() . '_' . $pic->getClientOriginalName();
+
+                    if ($category->image) {
+                        $oldPath = public_path('category/' . $category->image);
+                        if (file_exists($oldPath)) {
+                            unlink($oldPath);
+                        }
+                    }
+
+                    $pic->move(public_path('category'), $originalname);
+
+                    $data['image'] = $originalname;
+                } else {
+                    return redirect()->back()->with('error', 'Uploaded image is not valid.');
+                }
+            }
+
+
+            $category->update($data);
+
+            return redirect()->back()->with('success', 'Category updated successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Something went wrong: ' . $e->getMessage());
+        }
+        catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()
+                ->withErrors($e->validator)
+                ->withInput();
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', 'Something went wrong: ' . $e->getMessage())
+                ->withInput();
+        }
     }
+
 
     public function delete_category(Request $request)
     {
@@ -128,7 +179,7 @@ class DashboardController extends Controller
 
         Category::where('id',$category)->delete();
 
-        return redirect()->back();
+        return redirect()->back()->with('success','Category deleted successfully.');
     }
 
     public function add_product()

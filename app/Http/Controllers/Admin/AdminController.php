@@ -72,36 +72,63 @@ class AdminController extends Controller
 
     public function update_admin(Request $request)
     {
-        $id = $request->input('prod_id');
-        $image = Admin::findOrFail($id);
-        $name = $request->input('name');
-
-
-        if ($request->hasFile('image')) {
-            if (file_exists(public_path('admins/' . $image->image))) {
-                unlink(public_path('admins/' . $image->image));
-            }
-
-            $pic = $request->file('image');
-            $imageName = $name . '_' . time() . '.' . $pic->getClientOriginalExtension();
-
-
-            $pic->move(public_path('admins'), $imageName);
-
-            Admin::where('id', $id)->update([
-                'image' => $imageName,
+        try {
+            $request->validate([
+                'prod_id' => 'required|exists:admins,id',
+                'name' => 'sometimes|required|string|max:255',
+                'email' => 'sometimes|required|email',
+                'address' => 'sometimes|required|string|max:255',
+                'phone' => 'sometimes|required|string|max:20',
+                'password' => 'nullable|string|min:6',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
 
-            return redirect()->back();
+            $id = $request->input('prod_id');
+            $admin = Admin::findOrFail($id);
+
+            $data = [
+                'name' => $request->input('name'),
+                'email' => $request->input('email'),
+                'address' => $request->input('address'),
+                'phone' => $request->input('phone'),
+            ];
+
+            if ($request->filled('password')) {
+                $data['password'] = $request->input('password');
+            }
+
+            if ($request->hasFile('image')) {
+
+                $pic = $request->file('image');
+
+                if ($pic->isValid()) {
+                    // Delete old image if it exists
+                    $oldImagePath = public_path('admins/' . $admin->image);
+                    if ($admin->image && file_exists($oldImagePath)) {
+                        unlink($oldImagePath);
+                    }
+
+                    // Save new image
+                    $imageName = $request->input('name') . '_' . time() . '.' . $pic->getClientOriginalExtension();
+                    $pic->move(public_path('admins'), $imageName);
+
+                    $data['image'] = $imageName;
+                }
+            }
+
+
+            Admin::where('id', $id)->update($data);
+
+            return redirect()->back()->with('success', 'Admin updated successfully.');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()
+                ->withErrors($e->validator)
+                ->withInput();
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', 'Something went wrong: ' . $e->getMessage())
+                ->withInput();
         }
-        Admin::where('id', $id)->update([
-            'name'=>$name,
-            'email'=>$request->input('description'),
-            'address'=>$request->input('address'),
-            'phone'=>$request->input('price'),
-            'password'=>$request->input('stock'),
-        ]);
-        return redirect()->back();
     }
 
     public function display_permission()
@@ -116,7 +143,7 @@ class AdminController extends Controller
 
         $permission = permission::all();
 
-        return view('Admins.permissions',['id'=>$user,'admin'=>$admin,'permission'=>$permission,'ads'=>$ads,'admins'=>$admins]);
+        return view('admin.Admins.permissions',['id'=>$user,'admin'=>$admin,'permission'=>$permission,'ads'=>$ads,'admins'=>$admins]);
     }
 
     public function create_permission(Request $request)

@@ -154,7 +154,7 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="description{{$cata->id}}">Email</label>
-                                                                <input class="form-control" name="description" value="{{ $cata->email }}" required>
+                                                                <input class="form-control" name="email" value="{{ $cata->email }}" required>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="category">Address</label>
@@ -162,11 +162,11 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="price{{$cata->id}}">Mobile</label>
-                                                                <input type="number" class="form-control" id="price{{$cata->id}}" name="price" value="{{ $cata->phone }}" required>
+                                                                <input type="number" class="form-control" id="price{{$cata->id}}" name="phone" value="{{ $cata->phone }}" required>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="stock{{$cata->id}}">Password</label>
-                                                                <input type="number" class="form-control" id="stock{{$cata->id}}" name="stock" value="{{ $cata->password }}" required>
+                                                                <input type="number" class="form-control" id="stock{{$cata->id}}" name="password" value="{{ $cata->password }}" required>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="image{{$cata->id}}">Image</label>
@@ -196,13 +196,7 @@
         </div>
 
         <!-- partial:../../partials/_footer.html -->
-        <footer class="footer border-top">
-            <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between py-3 small">
-                <p class="text-muted mb-1 mb-md-0">Copyright © 2023 <a href="https://www.teanature.com" target="_blank">TeanaturE</a>.</p>
-                <p class="text-muted mb-1 mb-md-0">Developed By <a href="https://www.trodev.com" target="_blank">Trodev</a>.</p>
-                <p class="text-muted">Handcrafted With <i class="mb-1 text-primary ms-1 icon-sm" data-feather="heart">Trodev</i></p>
-            </div>
-        </footer>
+
         <!-- partial -->
 
     </div>
