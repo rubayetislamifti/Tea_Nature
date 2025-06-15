@@ -76,7 +76,7 @@ class LoginController extends Controller
 
         $depochange = $depocurrentPeriodCount - $depopreviousPeriodCount;
         $depoisIncrease = $depochange >= 0;
-        return view('admin.dashboard',['id'=>$user,'admin'=>$admin,'now'=>$now,'daily'=>$daily,'month'=>$month,
+        return view('admin.dashboard',['id'=>$user,'admins'=>$admin,'now'=>$now,'daily'=>$daily,'month'=>$month,
             'processing'=>$processing,'shipping'=>$shipping,'delivered'=>$delivered,'currentPeriodCount'=>$currentPeriodCount, 'change'=>$change, 'isIncrease'=>$isIncrease,
             'depocurrentPeriodCount'=>$depocurrentPeriodCount, 'depochange'=>$depochange, 'depoisIncrease'=>$depoisIncrease]);
     }

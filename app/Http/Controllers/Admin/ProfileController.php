@@ -21,7 +21,7 @@ class ProfileController extends Controller
         $postAll = PostModel::join('admins','admins.id','=','post_models.user_id')
             ->select('post_models.*','admins.*','post_models.id as posts')->inRandomOrder()->get();
 
-        return view('general.profile',['id'=>$user,'admin'=>$admin,
+        return view('admin.general.profile',['id'=>$user,'admins'=>$admin,
             'adminprofile'=>$adminprofile,'postAll'=>$postAll]);
     }
 

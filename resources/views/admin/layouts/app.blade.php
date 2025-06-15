@@ -202,7 +202,7 @@
                 <div class="container">
                     <ul class="nav page-navigation">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('welcomePage', ['id' => $admin]) }}">
+                            <a class="nav-link" href="{{ route('welcomePage', ['id' => $admins]) }}">
                                 <i class="link-icon" data-feather="box"></i>
                                 <span class="menu-title">Dashboard</span>
                             </a>
@@ -216,11 +216,11 @@
                             <div class="submenu">
                                 <ul class="submenu-item">
                                     <li class="category-heading">Category Section</li>
-                                    <li class="nav-item"><a class="nav-link" href="{{ route('addCategory', ['id' => $admin]) }}">Add Category</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="{{ route('displayCategory', ['id' => $admin]) }}">Display Category</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{{ route('addCategory', ['id' => $admins]) }}">Add Category</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{{ route('displayCategory', ['id' => $admins]) }}">Display Category</a></li>
                                     <li class="category-heading">Products Section</li>
-                                    <li class="nav-item"><a class="nav-link" href="{{ route('addProduct', ['id' => $admin]) }}">Add Products</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="{{ route('displayProduct', ['id' => $admin]) }}">Display Products</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{{ route('addProduct', ['id' => $admins]) }}">Add Products</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{{ route('displayProduct', ['id' => $admins]) }}">Display Products</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -233,19 +233,19 @@
                             <div class="submenu">
                                 <ul class="submenu-item">
                                     <li class="category-heading">Customer Section</li>
-                                    <li class="nav-item"><a class="nav-link" href="{{ route('customerInfo', ['id' => $admin]) }}">Customer Information</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="{{ route('customerOrders', ['id' => $admin]) }}">Customer Orders</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="{{ route('deliveryTracking', ['id' => $admin]) }}">Customer Delivery Tracking</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="{{ route('customerShippingCharges', ['id' => $admin]) }}">Customer Shipping Price</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{{ route('customerInfo', ['id' => $admins]) }}">Customer Information</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{{ route('customerOrders', ['id' => $admins]) }}">Customer Orders</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{{ route('deliveryTracking', ['id' => $admins]) }}">Customer Delivery Tracking</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{{ route('customerShippingCharges', ['id' => $admins]) }}">Customer Shipping Price</a></li>
                                     <li class="category-heading">Depo Section</li>
-                                    <li class="nav-item"><a class="nav-link" href="{{ route('depoInfo', ['id' => $admin]) }}">Depo Information</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="{{ route('depoOrders', ['id' => $admin]) }}">Depo Orders</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="{{ route('depoTracking', ['id' => $admin]) }}">Depo Delivery Tracking</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="{{ route('depoShippingCharges', ['id' => $admin]) }}">Depo Shipping Price</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{{ route('depoInfo', ['id' => $admins]) }}">Depo Information</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{{ route('depoOrders', ['id' => $admins]) }}">Depo Orders</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{{ route('depoTracking', ['id' => $admins]) }}">Depo Delivery Tracking</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{{ route('depoShippingCharges', ['id' => $admins]) }}">Depo Shipping Price</a></li>
                                 </ul>
                             </div>
                         </li>
-                        @if($admin->permission == 'Superadmin')
+                        @if($admins->permission == 'Superadmin')
                             <li class="nav-item">
                                 <a href="#" class="nav-link">
                                     <i class="link-icon" data-feather="inbox"></i>
@@ -254,9 +254,9 @@
                                 </a>
                                 <div class="submenu">
                                     <ul class="submenu-item">
-                                        <li class="nav-item"><a class="nav-link" href="{{ route('dailySales', ['id' => $admin]) }}">Daily Sales Tracking</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="{{ route('monthlySales', ['id' => $admin]) }}">Monthly Sales Tracking</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="{{ route('yearlySales', ['id' => $admin]) }}">Yearly Sales Tracking</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="{{ route('dailySales', ['id' => $admins]) }}">Daily Sales Tracking</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="{{ route('monthlySales', ['id' => $admins]) }}">Monthly Sales Tracking</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="{{ route('yearlySales', ['id' => $admins]) }}">Yearly Sales Tracking</a></li>
                                     </ul>
                                 </div>
                             </li>
@@ -269,8 +269,8 @@
                                 </a>
                                 <div class="submenu">
                                     <ul class="submenu-item">
-                                        <li class="nav-item"><a class="nav-link" href="{{ route('displayAdmin', ['id' => $admin->id]) }}">Admins</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="{{ route('displayPermission', ['id' => $admin]) }}">Permission</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="{{ route('displayAdmin', ['id' => $admins->id]) }}">Admins</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="{{ route('displayPermission', ['id' => $admins]) }}">Permission</a></li>
                                     </ul>
                                 </div>
                             </li>
@@ -287,10 +287,10 @@
                                         <p class="category-heading">Home Page</p>
                                         <ul>
                                             <li class="nav-item">
-                                                <a class="nav-link" href="{{ route('marquee', ['id' => $admin]) }}">Marquee Text</a>
+                                                <a class="nav-link" href="{{ route('marquee', ['id' => $admins]) }}">Marquee Text</a>
                                             </li>
                                             <li class="nav-item">
-                                                <a class="nav-link" href="{{ route('img_slider', ['id' => $admin]) }}">Image Slider</a>
+                                                <a class="nav-link" href="{{ route('img_slider', ['id' => $admins]) }}">Image Slider</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -298,10 +298,10 @@
                                         <p class="category-heading">Products & Store</p>
                                         <ul>
                                             <li class="nav-item">
-                                                <a class="nav-link" href="{{ route('product_page', ['id' => $admin]) }}">Products Page</a>
+                                                <a class="nav-link" href="{{ route('product_page', ['id' => $admins]) }}">Products Page</a>
                                             </li>
                                             <li class="nav-item">
-                                                <a class="nav-link" href="{{ route('store_page', ['id' => $admin]) }}">Store Page</a>
+                                                <a class="nav-link" href="{{ route('store_page', ['id' => $admins]) }}">Store Page</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -311,16 +311,15 @@
                                             <div class="row">
                                                 <div class="col-md-8">
                                                     <ul>
-                                                        <li class="nav-item"><a class="nav-link" href="{{route('about_us',['id'=>$admin])}}">About</a></li>
-                                                        <li class="nav-item"><a class="nav-link" href="{{route('testimonial',['id'=>$admin])}}">Testimonial</a></li>
-                                                        <li class="nav-item"><a class="nav-link" href="{{route('privacy_policy',['id'=>$admin])}}">Privacy and Policy</a></li>
+                                                        <li class="nav-item"><a class="nav-link" href="{{route('about_us',['id'=>$admins])}}">About</a></li>
+                                                        <li class="nav-item"><a class="nav-link" href="{{route('testimonial',['id'=>$admins])}}">Testimonial</a></li>
+                                                        <li class="nav-item"><a class="nav-link" href="{{route('privacy_policy',['id'=>$admins])}}">Privacy and Policy</a></li>
                                                     </ul>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <ul>
-                                                        <li class="nav-item"><a class="nav-link" href="{{route('blogs',['id'=>$admin])}}">Blogs</a></li>
-                                                        <li class="nav-item"><a class="nav-link" href="{{route('contact_page',['id'=>$admin])}}">Contact</a></li>
-                                                        {{--                                                    <li class="nav-item"><a class="nav-link" href="pages/general/invoice.html">Privacy and Policy</a></li>--}}
+                                                        <li class="nav-item"><a class="nav-link" href="{{route('blogs',['id'=>$admins])}}">Blogs</a></li>
+                                                        <li class="nav-item"><a class="nav-link" href="{{route('contact_page',['id'=>$admins])}}">Contact</a></li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -437,7 +436,7 @@
                                             <div class="row">
                                                 <div class="col-md-4">
                                                     <ul>
-                                                        <li class="nav-item"><a class="nav-link" href="{{route('marquee',['id'=>$id])}}">Photo Slider</a></li>
+                                                        <li class="nav-item"><a class="nav-link" href="{{route('img_slider',['id'=>$id])}}">Photo Slider</a></li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -466,17 +465,17 @@
 
 </div>
 
-<script src="{{asset('../assets/vendors/core/core.js')}}"></script>
+<script src="{{asset('admin/assets/vendors/core/core.js')}}"></script>
 <!-- endinject -->
 
 <!-- Plugin js for this page -->
-<script src="{{asset('../assets/vendors/flatpickr/flatpickr.min.js')}}"></script>
-<script src="{{asset('../assets/vendors/apexcharts/apexcharts.min.js')}}"></script>
+<script src="{{asset('admin/assets/vendors/flatpickr/flatpickr.min.js')}}"></script>
+<script src="{{asset('admin/assets/vendors/apexcharts/apexcharts.min.js')}}"></script>
 <!-- End plugin js for this page -->
 
 <!-- inject:js -->
-<script src="{{asset('../assets/vendors/feather-icons/feather.min.js')}}"></script>
-<script src="{{asset('../assets/js/template.js')}}"></script>
+<script src="{{asset('admin/assets/vendors/feather-icons/feather.min.js')}}"></script>
+<script src="{{asset('admin/assets/js/template.js')}}"></script>
 <!-- endinject -->
 
 <!-- Custom js for this page -->
@@ -558,6 +557,34 @@
 <script src="{{asset('admin/assets/js/dropify.js')}}"></script>
 <script src="{{asset('admin/assets/js/pickr.js')}}"></script>
 <script src="{{asset('admin/assets/js/flatpickr.js')}}"></script>
+
+<script>
+    ClassicEditor
+        .create(document.querySelector('#description'))
+        .then(editor => {
+            console.log(editor);
+        })
+        .catch(error => {
+            console.error(error);
+        });
+</script>
+
+<script>
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
+
+<script>
+    ClassicEditor
+        .create(document.querySelector('#exampleInputTextarea1'))
+        .then(editor => {
+            console.log(editor);
+        })
+        .catch(error => {
+            console.error(error);
+        });
+</script>
 
 <script>
     ClassicEditor

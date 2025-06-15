@@ -31,7 +31,7 @@ class StatusMail extends Mailable
             ->select('users.*','depo_infos.id')
             ->first();
 
-        return $this->view('email.status-update')
+        return $this->view('admin.email.status-update')
             ->with(['prod' =>$user]);
     }
 }

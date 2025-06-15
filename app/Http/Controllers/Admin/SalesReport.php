@@ -25,7 +25,7 @@ class SalesReport extends Controller
             ->select('orders.*','orders.price as total_price', 'products.name as product_name', 'products.price as product_price') // Explicitly select columns to avoid ambiguity
             ->get();
         $totalPrice = $sales->sum('total_price');
-        return view('SalesReport.daily-sales',['id'=>$id,'date'=>$date,'sales'=>$sales, 'totalPrice'=>$totalPrice,'admin'=>$admin]);
+        return view('admin.SalesReport.daily-sales',['id'=>$id,'date'=>$date,'sales'=>$sales, 'totalPrice'=>$totalPrice,'admins'=>$admin]);
     }
 
     public function monthly_sales(Request $request)
@@ -52,7 +52,7 @@ class SalesReport extends Controller
 //        dd($sales);
         $totalPrice = $sales->sum('total_price');
 
-        return view('SalesReport.monthly-sales',['id'=>$id,'date'=>$date,'sales'=>$sales, 'totalPrice'=>$totalPrice,'admin'=>$admin]);
+        return view('admin.SalesReport.monthly-sales',['id'=>$id,'date'=>$date,'sales'=>$sales, 'totalPrice'=>$totalPrice,'admins'=>$admin]);
     }
 
     public function yearly_sales(Request $request)
@@ -74,6 +74,6 @@ class SalesReport extends Controller
 
         $totalPrice = $sales->sum('total_price');
 
-        return view('SalesReport.yearly-sales',['id'=>$id,'year'=>$year,'sales'=>$sales, 'totalPrice'=>$totalPrice,'admin'=>$admin]);
+        return view('admin.SalesReport.yearly-sales',['id'=>$id,'year'=>$year,'sales'=>$sales, 'totalPrice'=>$totalPrice,'admins'=>$admin]);
     }
 }

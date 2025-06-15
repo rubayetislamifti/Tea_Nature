@@ -16,9 +16,9 @@
             <div class="row">
                 <div class="col-12 col-xl-12 stretch-card">
                     <div class="row flex-grow-1">
-                        @if($admin)
+                        @if($admins)
 
-                        @if($admin->permission == 'Superadmin')
+                        @if($admins->permission == 'Superadmin')
                         <div class="col-md-4 grid-margin stretch-card">
                             <div class="card">
                                 <div class="card-body">

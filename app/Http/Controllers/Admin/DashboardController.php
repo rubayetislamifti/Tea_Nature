@@ -36,19 +36,21 @@ class DashboardController extends Controller
     {
         $user = \request('id');
 
+//        dd($user);
+
         $admin = Admin::where('id',$user)->first();
 
 //        dd($admin);
         $category = Category::get();
 
-        return view('admin.Category.addCategory',['id'=>$user,'admin'=>$admin,'category'=>$category]);
+        return view('admin.Category.addCategory',['id'=>$user,'admins'=>$admin,'category'=>$category]);
     }
 
     public function insert_category(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif',
             'age_select' => 'required'
         ]);
 
@@ -99,7 +101,7 @@ class DashboardController extends Controller
 
         $admin = Admin::where('id',$user)->first();
 
-        return view('admin.Category.displayCategory',['id'=>$user,'category'=>$category,'admin'=>$admin]);
+        return view('admin.Category.displayCategory',['id'=>$user,'category'=>$category,'admins'=>$admin]);
     }
 
     public function update_category()
@@ -121,7 +123,7 @@ class DashboardController extends Controller
             'category_id' => 'required|exists:categories,id',
             'name' => 'sometimes|required|string|max:255',
             'age_select' => 'required',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif',
         ]);
 
         try {
@@ -192,33 +194,55 @@ class DashboardController extends Controller
 
         $admin = Admin::where('id',$user)->first();
 
-        return view('Products.addProducts',['id'=>$user,'category'=>$category,'admin'=>$admin,'prod'=>$prod]);
+        return view('admin.Products.addProducts',['id'=>$user,'category'=>$category,'admins'=>$admin,'prod'=>$prod]);
     }
 
     public function insert_product(Request $request)
     {
-        $pic = $request->file('image');
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'price' => 'required|numeric|min:0',
+            'stock' => 'required|integer|min:0',
+            'category' => 'required|string|max:255',
+            'cartoonqty' => 'required|integer|min:0',
+            'catroonprice' => 'required|numeric|min:0',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif',
+        ]);
 
-        if ($pic) {
-            $originalname = $pic->getClientOriginalName();
-            $path = $pic->storeAs('public/products', $originalname);
-            $path = str_replace('public/', '', $path);
-            $path2 = $pic->storeAs('products', $originalname, 'shared');
+        try {
+            if ($request->hasFile('image')) {
+                $pic = $request->file('image');
 
-            Products::create([
-                'name'=>$request->input('name'),
-                'description'=>$request->input('description'),
-                'price'=>$request->input('price'),
-                'image'=>$path,
-                'stock'=>$request->input('stock'),
-                'category'=>$request->input('category'),
-                'cartoonqty'=>$request->input('cartoonqty'),
-                'cartoonprice'=>$request->input('catroonprice')
-            ]);
+                if ($pic->isValid()) {
+                    $originalname = time() . '_' . $pic->getClientOriginalName();
 
-            return redirect()->back();
+                    $pic->move(public_path('products'), $originalname);
+
+
+                    Products::create([
+                        'name' => $request->input('name'),
+                        'description' => $request->input('description'),
+                        'price' => $request->input('price'),
+                        'image' => $originalname,
+                        'stock' => $request->input('stock'),
+                        'category' => $request->input('category'),
+                        'cartoonqty' => $request->input('cartoonqty'),
+                        'cartoonprice' => $request->input('catroonprice'),
+                    ]);
+
+                    return redirect()->back()->with('success', 'Product inserted successfully.');
+                } else {
+                    return redirect()->back()->with('error', 'Uploaded image is not valid.');
+                }
+            } else {
+                return redirect()->back()->with('error', 'Image is required.');
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Something went wrong: ' . $e->getMessage());
         }
     }
+
 
     public function display_products()
     {
@@ -230,60 +254,96 @@ class DashboardController extends Controller
 
         $admin = Admin::where('id',$user)->first();
 
-        return view('Products.displayProducts',['id'=>$user,'category'=>$category,'catagory'=>$catagory,'admin'=>$admin]);
+        return view('admin.Products.displayProducts',['id'=>$user,'category'=>$category,'catagory'=>$catagory,'admins'=>$admin]);
     }
 
     public function apply_discount(Request $request)
     {
-        Products::where('id',$request->input('category_id'))->update([
-            'discount' => $request->input('discount'),
-            'price'=> $request->input('new_price'),
-            'previous_price' => $request->input('previous_price')
+        $request->validate([
+            'category_id' => 'required|exists:products,id',
+            'discount' => 'required|numeric|min:0|max:100',
+            'new_price' => 'required|numeric|min:0',
+            'previous_price' => 'required|numeric|min:0',
         ]);
 
-        return redirect()->back();
+        try {
+            $product = Products::find($request->input('category_id'));
+
+            if (!$product) {
+                return redirect()->back()->with('error', 'Product not found.');
+            }
+
+            $product->update([
+                'discount' => $request->input('discount'),
+                'price' => $request->input('new_price'),
+                'previous_price' => $request->input('previous_price'),
+            ]);
+
+            return redirect()->back()->with('success', 'Discount applied successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Something went wrong: ' . $e->getMessage());
+        }
     }
+
 
     public function update_products(Request $request)
     {
-        Products::where('id',$request->input('prod_id'))->update([
-            'name' => $request->input('name'),
-            'description' => $request->input('description'),
-            'price' => $request->input('price'),
-            'stock' => $request->input('stock'),
-            'category' => $request->input('category'),
-            'cartoonqty'=>$request->input('cartoonqty'),
-            'cartoonprice'=>$request->input('cartoonprice')
-
+        $request->validate([
+            'prod_id' => 'required|exists:products,id',
+            'name' => 'sometimes|required|string|max:255',
+            'description' => 'sometimes|required|string',
+            'price' => 'sometimes|required|numeric|min:0',
+            'stock' => 'sometimes|required|integer|min:0',
+            'category' => 'sometimes|required|string|max:255',
+            'cartoonqty' => 'sometimes|required|integer|min:0',
+            'cartoonprice' => 'sometimes|required|numeric|min:0',
+            'image' => 'sometimes|nullable|image|mimes:jpeg,png,jpg,gif',
         ]);
 
-        $pic = $request->file('image');
-
-        $categoryId = $request->input('prod_id');
-        if ($pic) {
-            $originalname = $pic->getClientOriginalName();
-
-            $category = Products::find($categoryId);
-
-            if ($category && $category->image) {
-                Storage::delete('public/' . $category->image);
-                Storage::disk('shared')->delete('public/' . $category->image);
-            }
-
-            $path = $pic->storeAs('public/product', $originalname);
-            $path = str_replace('public/', '', $path);
-            $path2 = $pic->storeAs('product', $originalname, 'shared');
+        try {
+            $product = Products::findOrFail($request->input('prod_id'));
 
 
-            $category->update([
-                'image' => $path,
+            $product->update([
+                'name' => $request->input('name'),
+                'description' => $request->input('description'),
+                'price' => $request->input('price'),
+                'stock' => $request->input('stock'),
+                'category' => $request->input('category'),
+                'cartoonqty' => $request->input('cartoonqty'),
+                'cartoonprice' => $request->input('catroonprice'),
             ]);
 
-            return redirect()->back();
-        }
 
-        return redirect()->back();
+            if ($request->hasFile('image')) {
+                $pic = $request->file('image');
+
+                if ($pic->isValid()) {
+                    $imageName = time() . '_' . $pic->getClientOriginalName();
+
+
+                    if ($product->image) {
+                        $oldPath = public_path('products/' . $product->image);
+                        if (file_exists($oldPath)) {
+                            unlink($oldPath);
+                        }
+
+                    }
+
+                    $pic->move(public_path('products'), $imageName);
+
+                    $product->update(['image' => $imageName]);
+                } else {
+                    return redirect()->back()->with('error', 'Uploaded image is not valid.');
+                }
+            }
+
+            return redirect()->back()->with('success', 'Product updated successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Something went wrong: ' . $e->getMessage());
+        }
     }
+
 
     public function delete_product(Request $request)
     {
@@ -291,7 +351,7 @@ class DashboardController extends Controller
 
         Products::where('id',$category)->delete();
 
-        return redirect()->back();
+        return redirect()->back()->with('success','Product deleted successfully');
     }
 
     public function cutomer_info()
@@ -306,7 +366,7 @@ class DashboardController extends Controller
 
         $admin = Admin::where('id',$user)->first();
 
-        return view('User.customer-info',['id'=>$user,'customer'=>$customers,'admin'=>$admin]);
+        return view('admin.User.customer-info',['id'=>$user,'customer'=>$customers,'admins'=>$admin]);
     }
 
     public function depo_info()
@@ -321,7 +381,7 @@ class DashboardController extends Controller
 
         $admin = Admin::where('id',$user)->first();
 
-        return view('User.depo-info',['id'=>$user,'customer'=>$customers,'admin'=>$admin]);
+        return view('admin.User.depo-info',['id'=>$user,'customer'=>$customers,'admins'=>$admin]);
     }
 
     public function depo_status_update(Request $request)
@@ -344,7 +404,7 @@ class DashboardController extends Controller
 
         $admin = Admin::where('id',$user)->first();
 
-        return view('Shipping.customer-shipping',['id'=>$user,'category'=>$customers,'admin'=>$admin]);
+        return view('admin.Shipping.customer-shipping',['id'=>$user,'category'=>$customers,'admins'=>$admin]);
     }
 
     public function insert_shipping(Request $request)
@@ -388,7 +448,7 @@ class DashboardController extends Controller
 
         $admin = Admin::where('id',$user)->first();
 
-        return view('Shipping.depo-shipping',['id'=>$user,'category'=>$customers,'admin'=>$admin]);
+        return view('admin.Shipping.depo-shipping',['id'=>$user,'category'=>$customers,'admins'=>$admin]);
     }
 
     public function customer_order()
@@ -411,7 +471,7 @@ class DashboardController extends Controller
 
         $admin = Admin::where('id',$user)->first();
 
-        return view('Order.customer-order',['id'=>$user,'category'=>$order,'products'=>$product,'admin'=>$admin]);
+        return view('admin.Order.customer-order',['id'=>$user,'category'=>$order,'products'=>$product,'admins'=>$admin]);
     }
 
     public function depo_order()
@@ -432,7 +492,7 @@ class DashboardController extends Controller
 
         $admin = Admin::where('id',$user)->first();
 
-        return view('Order.depo-order',['id'=>$user,'category'=>$order,'products'=>$product,'admin'=>$admin]);
+        return view('admin.Order.depo-order',['id'=>$user,'category'=>$order,'products'=>$product,'admins'=>$admin]);
     }
 
     public function update_delivary(Request $request)
@@ -488,7 +548,7 @@ class DashboardController extends Controller
 
 
 
-        return view('Order.invoice',['infos'=>$infos,'customer'=>$customer,
+        return view('admin.Order.invoice',['infos'=>$infos,'customer'=>$customer,
             'shippingDhaka'=>$shippingDhaka,'shippingOther'=>$shippingOther,'date'=>$now,'roles'=>$role]);
     }
 
@@ -508,7 +568,7 @@ class DashboardController extends Controller
             ->get();
         $admin = Admin::where('id',$user)->first();
 
-        return view('Order.customer-delivery',['id'=>$user,'category'=>$order,'products'=>$product,'admin'=>$admin]);
+        return view('admin.Order.customer-delivery',['id'=>$user,'category'=>$order,'products'=>$product,'admins'=>$admin]);
     }
 
     public function depo_delivery()
@@ -528,7 +588,7 @@ class DashboardController extends Controller
             ->get();
         $admin = Admin::where('id',$user)->first();
 
-        return view('Order.depo-delivery',['id'=>$user,'category'=>$order,'products'=>$product,'admin'=>$admin]);
+        return view('admin.Order.depo-delivery',['id'=>$user,'category'=>$order,'products'=>$product,'admins'=>$admin]);
     }
 
     public function orderDelivery(Request $request)
@@ -548,7 +608,7 @@ class DashboardController extends Controller
 
         $mar = marqueetext::first();
 
-        return view('website.marquee',['id'=>$user,'admin'=>$admin,'marquee'=>$mar]);
+        return view('admin.website.marquee',['id'=>$user,'admins'=>$admin,'marquee'=>$mar]);
     }
 
     public function insertMarquee(Request $request)
@@ -577,7 +637,7 @@ class DashboardController extends Controller
 
         $mar = Testimonial::all();
 
-        return view('website.testimonial',['id'=>$user,'admin'=>$admin,'marquee'=>$mar]);
+        return view('admin.website.testimonial',['id'=>$user,'admins'=>$admin,'marquee'=>$mar]);
 
     }
 
@@ -613,41 +673,25 @@ class DashboardController extends Controller
 
         $mar = About::first();
 
-        return view('website.about',['id'=>$user,'admin'=>$admin,'marquee'=>$mar]);
+        return view('admin.website.about',['id'=>$user,'admins'=>$admin,'marquee'=>$mar]);
     }
 
     public function img_upload(Request $request)
     {
         if ($request->hasFile('upload')) {
             $image = $request->file('upload');
-            $originName = $request->file('upload')->getClientOriginalName();
-            $fileName = pathinfo($originName, PATHINFO_FILENAME);
-            $extension = $request->file('upload')->getClientOriginalExtension();
+            $originName = $image->getClientOriginalName();
+            $extension = $image->getClientOriginalExtension();
             $fileName = time() . '.' . $extension;
-
-//            $resizedImage = Image::make($image)->resize(300, null, function ($constraint) {
-//                $constraint->aspectRatio();
-//            });
             $image->move(public_path('images'), $fileName);
-
             $url = asset('images/' . $fileName);
-
-            $sharedFolderPath = 'I:\Trodev\Tea Nature\TeaNature_User\public';
-
-
-            $sharedFilePath = $sharedFolderPath . '\images';
-
-
-            if (!File::exists($sharedFilePath)) {
-                File::makeDirectory($sharedFilePath, 0755, true);
-            }
-
-
-            File::copy(public_path('images/' . $fileName), $sharedFilePath . '\\' . $fileName);
-
-
-            return response()->json(['url'=>$url,'fileName'=>$fileName,'uploaded'=>1]);
+            return response()->json([
+                'uploaded' => 1,
+                'fileName' => $fileName,
+                'url' => $url
+            ]);
         }
+
     }
 
     public function about_us_upload(Request $request)
@@ -679,7 +723,7 @@ class DashboardController extends Controller
 
         $mar = Privacy::first();
 
-        return view('website.privacy-policy',['id'=>$user,'admin'=>$admin,'marquee'=>$mar]);
+        return view('admin.website.privacy-policy',['id'=>$user,'admins'=>$admin,'marquee'=>$mar]);
     }
 
     public function privacy_upload(Request $request)
@@ -711,7 +755,7 @@ class DashboardController extends Controller
 
         $mar = Blogs::all();
 
-        return view('website.blogs',['id'=>$user,'admin'=>$admin,'marquee'=>$mar]);
+        return view('admin.website.blogs',['id'=>$user,'admins'=>$admin,'marquee'=>$mar]);
     }
 
     public function insertBlogs(Request $request)
@@ -753,7 +797,7 @@ class DashboardController extends Controller
 
         $mar = Contact::first();
 
-        return view('website.contact',['id'=>$user,'admin'=>$admin,'marquee'=>$mar]);
+        return view('admin.website.contact',['id'=>$user,'admins'=>$admin,'marquee'=>$mar]);
     }
 
     public function contact_upload(Request $request)
@@ -801,77 +845,80 @@ class DashboardController extends Controller
 
         $mar = SliderImg::all();
 
-        return view('website.img-slider',['id'=>$user,'admin'=>$admin,'marquee'=>$mar]);
+        return view('admin.website.img-slider',['id'=>$user,'admins'=>$admin,'marquee'=>$mar]);
     }
 
     public function insertSlider(Request $request)
     {
-        $img = $request->file('description');
-        if ($img) {
-            $originalname = time() . '.' . $img->getClientOriginalExtension();
-            $path = $img->storeAs('public/slider', $originalname);
-            $path = str_replace('public/', '', $path);
-            $path2 = $img->storeAs('slider', $originalname, 'shared');
+        if ($request->hasFile('description')) {
+            $img = $request->file('description');
 
-            SliderImg::create([
-                'title'=>$request->input('name'),
-                'image'=>$path,
-            ]);
+            if ($img->isValid()) {
+                $imageName = time() . '.' . $img->getClientOriginalExtension();
+                $img->move(public_path('slider'), $imageName);
 
-            return redirect()->back()->with('success', 'Slider image created successfully');
+                SliderImg::create([
+                    'image' => $imageName,
+                ]);
+
+                return redirect()->back()->with('success', 'Slider image uploaded successfully.');
+            }
+
+            return redirect()->back()->with('error', 'Uploaded file is not valid.');
         }
+
+        return redirect()->back()->with('error', 'No image was uploaded.');
     }
 
-    public function updateImage(Request $request, $id) {
+
+    public function updateImage(Request $request, $id)
+    {
         $testimonial = SliderImg::findOrFail($id);
         $img = $request->file('description');
+
         if ($img) {
             $originalName = time() . '.' . $img->getClientOriginalExtension();
-            $existingImagePath = $testimonial->image;
 
-            if ($existingImagePath) {
-                Storage::delete('public/slider/' . $existingImagePath);
 
-                Storage::disk('shared')->delete('slider/' . $existingImagePath);
+            $existingImagePath = public_path('slider/' . $testimonial->image);
+            if (file_exists($existingImagePath)) {
+                unlink($existingImagePath);
             }
 
 
-            $publicPath = $img->storeAs('public/slider', $originalName);
+            $img->move(public_path('slider'), $originalName);
 
 
-            $publicPath = str_replace('public/', '', $publicPath);
-
-
-            $sharedPath = $img->storeAs('slider', $originalName, 'shared');
-        }
-
-        if ($request->hasFile('description')) {
             $testimonial->update([
-                'title'=>$request->input('title'),
-                'image'=>$publicPath
+                'image' => $originalName,
+                'title' => $request->input('title'),
+            ]);
+        } else {
+
+            $testimonial->update([
+                'title' => $request->input('title'),
             ]);
         }
-        else
-            $testimonial->update([
-                'title'=>$request->input('title'),
-            ]);
 
         return redirect()->back()->with('success', 'Image updated successfully');
     }
+
 
     public function deleteImge($id)
     {
         $testimonial = SliderImg::findOrFail($id);
 
-        $existingImagePath = $testimonial->image;
+        $imagePath = public_path('slider/' . $testimonial->image);
 
-        if ($existingImagePath) {
-            Storage::delete('public/slider/' . $existingImagePath);
-            Storage::disk('shared')->delete('slider/' . $existingImagePath);
+        if (file_exists($imagePath)) {
+            unlink($imagePath);
         }
+
         $testimonial->delete();
-        return redirect()->back()->with('success', 'Testimonial deleted successfully');
+
+        return redirect()->back()->with('success', 'Testimonial deleted successfully.');
     }
+
 
 
     public function product_page()
@@ -882,7 +929,7 @@ class DashboardController extends Controller
 
         $mar = ProductPage::first();
 
-        return view('website.product',['id'=>$user,'admin'=>$admin,'marquee'=>$mar]);
+        return view('admin.website.product',['id'=>$user,'admins'=>$admin,'marquee'=>$mar]);
     }
 
     public function title_upload(Request $request)
@@ -917,7 +964,7 @@ class DashboardController extends Controller
 
         $mar = StorePage::first();
 
-        return view('website.storepage',['id'=>$user,'admin'=>$admin,'marquee'=>$mar]);
+        return view('admin.website.storepage',['id'=>$user,'admins'=>$admin,'marquee'=>$mar]);
     }
 
     public function store_title_upload(Request $request)

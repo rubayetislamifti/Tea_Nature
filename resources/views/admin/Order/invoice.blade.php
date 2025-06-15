@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="ThemeMarch">
     <!-- Site Title -->
-    <title>General Invoice</title>
+    <title>{{config('app.name')}} Invoice</title>
     <link rel="stylesheet" href="{{asset('invoice/assets/css/style.css')}}">
 </head>
 

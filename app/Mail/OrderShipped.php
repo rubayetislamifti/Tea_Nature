@@ -22,7 +22,7 @@ class OrderShipped extends Mailable
 
     public function build()
     {
-        return $this->view('email.orders-shipped')
+        return $this->view('admin.email.orders-shipped')
             ->with([
                 'deliveryDate' => $this->deliveryDate,
             ]);
