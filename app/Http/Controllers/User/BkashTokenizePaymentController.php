@@ -49,7 +49,7 @@ class BkashTokenizePaymentController extends Controller
                     ->first();
 
 //                dd($updatedOrder);
-                // Fetch all admin email addresses from the `admins` table
+
                 $adminEmails = DB::table('admins')->pluck('email')->toArray();
 
                 //dd($updatedOrder->user->email);
@@ -58,10 +58,8 @@ class BkashTokenizePaymentController extends Controller
                 $userEmail = User::where('id',$updatedOrder->user_id)->first();
 
 
-                // Merge user email with admin emails
                 $recipients = array_merge([$userEmail->email], $adminEmails);
 
-                // Send email to all recipients
                 foreach ($recipients as $email) {
                     Mail::to($email)->send(new InvoiceMail($updatedOrder));
                 }

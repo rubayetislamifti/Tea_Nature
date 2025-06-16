@@ -55,7 +55,7 @@ class UserLoginController extends Controller
             $user = Auth::user();
 
             // Transfer session cart items to user's cart in the database
-            $this->transferSessionCartToUser($user);
+//            $this->transferSessionCartToUser($user);
             //dd($request->has('redirect') && $request->input('redirect'));
             if ($request->has('redirect') && $request->input('redirect') === 'checkout') {
 

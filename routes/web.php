@@ -14,6 +14,8 @@ use App\Http\Controllers\User\DepoController;
 use App\Http\Controllers\User\DepoLoginController;
 use App\Http\Controllers\User\UddoktapayController;
 use App\Http\Controllers\User\NewUserController;
+use App\Http\Controllers\User\OrderController;
+use App\Http\Controllers\User\PaymentController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -54,11 +56,17 @@ Route::post('/user.data',[NewUserController::class,'upload_user_data'])->name('u
 
 Route::post('/register-customer',[UserLoginController::class,'registration'])->name('register-customer');
 
-Route::post('/create-orders',[NonUserController::class,'create_orders'])->name('create-orders');
+Route::post('/orders',[OrderController::class,'store'])->name('user.create-orders');
 
-Route::get('/cart', [NonUserController::class, 'viewCart'])->name('cart.view');
+Route::get('/orders', [OrderController::class, 'index'])->name('cart.view');
 
-Route::post('/cart/remove', [NonUserController::class, 'removeFromCart'])->name('cart.remove');
+Route::post('/orders/destroy', [OrderController::class, 'destroy'])->name('cart.remove');
+
+Route::post('/payment',[PaymentController::class,'index'])->name('payment');
+
+Route::get('/callback',[PaymentController::class,'callback'])->name('callbackURL');
+
+Route::get('/verify-payment', [PaymentController::class, 'verifyPayment'])->name('verifyPayment');
 
 Route::get('/privacy-policy',[NonUserController::class,'privacy_policy'])->name('privacy_policy');
 /* Non User End*/
@@ -128,7 +136,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/checkout',[UserController::class,'checkout'])->name('checkout');
 
-    Route::get('/invoice',[UserController::class,'invoice'])->name('invoice');
+    Route::get('/user_invoice',[UserController::class,'invoice'])->name('invoice');
 
     Route::post('/update-Cart',[UserController::class,'update_cart'])->name('update_cart');
 
@@ -221,7 +229,7 @@ Route::post( 'webhook', [UddoktapayController::class, 'webhook'] )->name( 'uddok
 //});
 
 Route::prefix('admin')->group(function (){
-//   Route::get('/login',[LoginController::class,'registerPage'])->name('admin.login');
+   Route::get('/login',[LoginController::class,'registerPage'])->name('admin.login');
 
     Route::post('/login', [LoginController::class, 'loginController'])->name('admin.login');
 
@@ -292,7 +300,7 @@ Route::prefix('admin')->group(function (){
 
     Route::post('/update-order',[DashboardController::class,'update_delivary'])->name('updateOrder');
 
-    Route::get('/customerInvoice',[DashboardController::class,'invoice'])->name('invoice');
+    Route::get('/customerInvoice',[DashboardController::class,'invoice'])->name('admin.invoice');
 
     Route::get('/customerDeliveryTracking',[DashboardController::class,'customer_delivery'])->name('deliveryTracking');
 

@@ -185,7 +185,265 @@
             color: #999; /* Adjust color as needed */
         }
 
+        .previous-price {
+            text-decoration: line-through;
+            color: #999; /* Adjust color as needed */
+            font-size: 16px; /* Adjust font size as needed */
+            margin-right: 10px; /* Adjust margin as needed */
+        }
+        .badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            display: inline-block;
+            padding: 0.25em 0.4em;
+            font-size: 75%;
+            font-weight: 700;
+            line-height: 1;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: 50%;
+            background-color: #007bff;
+            color: #fff;
+        }
 
+        .col-lg-4 {
+            margin-bottom: 30px;
+        }
+
+        h4 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .bg-light {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .p-30 {
+            padding: 30px !important;
+        }
+
+        .mb-5 {
+            margin-bottom: 30px !important;
+        }
+
+        /* Order Total section */
+        .border-bottom {
+            border-bottom: 1px solid #dee2e6;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+        }
+
+        .d-flex {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .justify-content-between {
+            justify-content: space-between !important;
+        }
+
+        h6 {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #333;
+        }
+
+        p {
+            font-size: 0.9rem;
+            color: #555;
+            margin: 0;
+        }
+
+        /* Total Section */
+        .pt-2 {
+            padding-top: 10px !important;
+        }
+
+        .h5, h5 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .mt-2 {
+            margin-top: 10px !important;
+        }
+
+        .btn {
+            font-size: 1rem;
+            border-radius: 4px;
+            padding: 12px 20px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .btn-block {
+            width: 100%;
+        }
+
+        /* Payment Section */
+        .custom-control {
+            position: relative;
+            display: block;
+            padding-left: 1.5rem;
+        }
+
+        .custom-control-label {
+            position: relative;
+            margin-bottom: 0;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: #333;
+            padding-left: 1.5rem;
+        }
+
+        .custom-control-input {
+            position: absolute;
+            z-index: -1;
+            opacity: 0;
+        }
+
+        .custom-control-input:checked ~ .custom-control-label::before {
+            color: #fff;
+            border-color: #007bff;
+            background-color: #007bff;
+        }
+
+        .custom-control-label::before {
+            position: absolute;
+            top: 0.25rem;
+            left: 0;
+            display: block;
+            width: 1rem;
+            height: 1rem;
+            pointer-events: none;
+            content: "";
+            background-color: #fff;
+            border: 1px solid #adb5bd;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+        }
+
+        .custom-radio .custom-control-label::before {
+            border-radius: 50%;
+        }
+        /* General Form Styling */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-control {
+            border-radius: 4px;
+            border: 1px solid #ced4da;
+            padding: 10px 15px;
+            font-size: 1rem;
+            color: #495057;
+            background-color: #fff;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        /* Focus State for Form Controls */
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+        }
+
+        /* Label Styling */
+        label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        /* Placeholder Styling */
+        ::placeholder {
+            color: #adb5bd;
+            opacity: 1; /* Ensures full opacity in all browsers */
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .form-group {
+                margin-bottom: 1rem;
+            }
+
+            .form-control {
+                padding: 8px 12px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Read-Only Input Fields */
+        .form-control[readonly] {
+            background-color: #e9ecef;
+            opacity: 1;
+            cursor: not-allowed;
+        }
+
+        /* Enhanced Button Styling */
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 4px;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+
+        /* Product Details Container */
+        .product-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Product Name Styling */
+        .product-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        /* Product Quantity Styling */
+        .product-quantity {
+            font-size: 0.875rem;
+            color: #666;
+        }
+
+        /* Product Price Styling */
+        .product-price {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #007bff;
+        }
+
+        /* Margin between products */
+        .mb-2 {
+            margin-bottom: 0.5rem !important;
+        }
 
     </style>
 

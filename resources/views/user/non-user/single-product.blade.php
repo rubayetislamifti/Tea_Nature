@@ -61,7 +61,7 @@
                 <!-- Notice for Bulk Buyers -->
                 <p class="text-warning mb-2">Note: This is for individual users only. If you want to buy in bulk, please open an account.</p>
 
-                <form action="{{route('create-orders')}}" method="POST">
+                <form action="{{route('user.create-orders')}}" method="POST">
                     @csrf
                     <input type="hidden" name="product_id" value="{{$products->id}}">
                     <input type="hidden" name="role" value="non-users">

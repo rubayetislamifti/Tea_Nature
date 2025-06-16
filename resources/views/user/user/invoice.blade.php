@@ -9,19 +9,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="ThemeMarch">
     <!-- Site Title -->
-    
+
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-RLP6WBMWKY"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-    
+
         gtag('config', 'G-RLP6WBMWKY');
-      
-    
+
+
     </script>
-    <title>General Invoice</title>
-    <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
+    <title>{{config('app.name')}}</title>
+    <link rel="stylesheet" href="{{asset('user/assets/css/style.css')}}">
 </head>
 
 <body>
@@ -34,9 +34,12 @@
                     <p class="cs-invoice_date cs-primary_color cs-m0"><b class="cs-primary_color">Date: </b>{{ $date->format('F d, Y') }}</p>
                 </div>
                 <div class="cs-invoice_right cs-text_right">
-                
+
                     <div class="cs-logo cs-mb5">
-                        <img src="{{asset('assets/img/logo.png')}}" alt="Logo"></div>
+                        <a href="{{route('home')}}">
+                            <img src="{{asset('assets/img/logo.png')}}" alt="Logo">
+                        </a>
+                    </div>
                 </div>
 
 
@@ -146,16 +149,16 @@
                             let subtotal = 0;
                         const itemTotalPrices = document.querySelectorAll('.item-total-price');
                         const products = [];
-                
+
                         itemTotalPrices.forEach(function(item, index) {
                             const itemRow = item.closest('tr');
                             const productName = itemRow.querySelector('td:nth-child(1)').textContent;
                             const unitPrice = parseFloat(itemRow.querySelector('td:nth-child(2)').textContent.replace('৳', ''));
                             const quantity = parseFloat(itemRow.querySelector('td:nth-child(3)').textContent);
                             const totalPrice = parseFloat(item.textContent.replace('৳', ''));
-                
+
                             subtotal += totalPrice;
-                
+
                             // Send individual product tracking
                             gtag('event', 'purchase', {
                                 'transaction_id': "{{ $customer->invoice_id }}",
@@ -169,24 +172,24 @@
                                     'quantity': quantity
                                 }]
                             });
-                            
+
                             let subtotal = 0;
                             const itemTotalPrices = document.querySelectorAll('.item-total-price');
-                        
+
                             itemTotalPrices.forEach(function(item) {
                                 subtotal += parseFloat(item.textContent.replace('৳', ''));
                             });
-                        
+
                             document.getElementById('subtotal').textContent = `৳${subtotal.toFixed(2)}`;
-                        
+
                             const shippingChargesElement = document.getElementById('shipping-charges');
                             const shippingCharges = parseFloat(shippingChargesElement.textContent.replace('৳', ''));
-                        
+
                             const totalAmount = subtotal + shippingCharges;
                             document.getElementById('total-amount').textContent = `৳${totalAmount.toFixed(2)}`;
-                        
+
                             const paymentMethod = "{{ $customer->payment_method }}";
-                            
+
                             if (paymentMethod === 'bKash') {
                                 gtag('event', 'purchase', {
                                     'transaction_id': "{{ $customer->transaction_id }}",
@@ -208,7 +211,7 @@
 
                 </script>
 
-            
+
 
 
             <div class="cs-note">

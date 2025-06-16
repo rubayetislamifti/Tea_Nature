@@ -124,16 +124,15 @@
                     <div class="store-overlay">
                         <a href="{{route('single-product',['id'=>$prods->id])}}" class="btn btn-primary rounded-pill py-2 px-4 m-2">More Detail <i
                                 class="fa fa-arrow-right ms-2"></i></a>
-                        <form action="{{route('create-orders')}}" method="post">
+                        <form action="{{route('user.create-orders')}}" method="post">
                             @csrf
 {{--                            <input type="hidden" name="user_id" value="{{$info->id}}">--}}
                             <input type="hidden" name="product_id" value="{{$prods->id}}">
-                            <input type="hidden" name="role" value="non-users">
+{{--                            <input type="hidden" name="role" value="non-users">--}}
                             <input type="hidden" id="quantity" name="quantity" class="form-control mb-4" min="1" value="1">
                             <button type="submit" class="btn btn-dark rounded-pill py-2 px-4 m-2 add-to-cart-btn">Add to Cart <i
                                     class="fa fa-cart-plus ms-2"></i></button>
                         </form>
-
                     </div>
                 </div>
             </div>

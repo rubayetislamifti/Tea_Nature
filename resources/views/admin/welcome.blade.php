@@ -71,7 +71,7 @@
                                         </div>
                                     @endif
 
-                                    <form class="forms-sample" action="{{ route('login') }}" method="post">
+                                    <form class="forms-sample" action="{{ route('admin.login') }}" method="post">
                                         @csrf
                                         <div class="mb-3">
                                             <label for="userEmail" class="form-label">Email address</label>

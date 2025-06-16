@@ -144,10 +144,9 @@ class NonUserController extends Controller
 
     public function viewCart()
     {
-        $text = DB::table('marqueetexts')->first();
-        $cart = Session::get('cart', []);
-        $contact = DB::table('contacts')->first();
-        return view('non-user.cartview', ['cart'=>$cart,'text'=>$text,'contact'=>$contact]);
+        $cart = session()->get('cart', []);
+
+        return view('user.non-user.cartview', ['cart'=>$cart]);
     }
 
     public function removeFromCart(Request $request)

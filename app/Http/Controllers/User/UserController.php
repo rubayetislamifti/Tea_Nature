@@ -375,36 +375,16 @@ class UserController extends Controller
     public function checkout()
     {
         if (!Auth::check()) {
-            // Redirect user to login page with intended redirect URL
             return redirect()->route('login', ['redirect' => route('checkout')]);
         }
 
-        // Retrieve id from request
-        $id = request('id');
-
-        // Find customer info by id
-        $user = Customer_Info::find($id);
-        $mar = DB::table('marqueetexts')->first();
-        $contact = DB::table('contacts')->first();
-
-        // Check if customer info was found
-        if (!$user) {
-            // Handle case where customer info is not found
-            abort(404); // or any other appropriate action, e.g., redirect back
-        }
-        $product = Order::where('user_id',$user->id)->where('order_status','Pending')
-            ->join('products','orders.product_id','=','products.id')
-            ->select('orders.*','products.*','orders.price as total_price')
-            ->get();
-        $ip = request()->ip();
-        $count = DB::table('orders')
-            //->where('user_ip_address',$ip)
-            ->where('user_id',$user->id)
-            ->where('order_status','Pending')->count();
-            $userShipping = DB::table('shipping_charges')->where('roles', 'users')->where('places', 'Dhaka')->first();
+        $cart = session()->get('cart', []);
+        $userShipping = DB::table('shipping_charges')->where('roles', 'users')->where('places', 'Dhaka')->first();
         $userShippingOutside = DB::table('shipping_charges')->where('roles', 'users')->where('places', 'Outside Dhaka')->first();
-        return view('user.checkout',['id' => $id,'info'=>$user,'product'=>$product,'count'=>$count,
-            'mar'=>$mar,'contact'=>$contact,'charge'=>$userShipping,'outside'=>$userShippingOutside]);
+        return view('user.user.checkout',[
+            'charge'=>$userShipping,
+            'outside'=>$userShippingOutside,
+            'cart'=>$cart]);
     }
 
     public function invoice()
@@ -450,7 +430,7 @@ class UserController extends Controller
             $shippingOther = DB::table('shipping_charges')->where('roles', 'depo')->where('places', '!=', 'Dhaka')->first();
         }
 
-        return view('user.invoice',['infos'=>$infos,'customer'=>$customer,
+        return view('user.user.invoice',['infos'=>$infos,'customer'=>$customer,
             'shippingDhaka'=>$shippingDhaka,'shippingOther'=>$shippingOther,'date'=>$now,'roles'=>$role]);
     }
 

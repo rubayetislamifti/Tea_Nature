@@ -41,7 +41,7 @@ class InvoiceMail extends Mailable
         $usershippingOutDhaka = DB::table('shipping_charges')->where('roles', 'users')->where('places', 'Outside Dhaka')->first();
         $userShipping = DB::table('shipping_charges')->where('roles', 'depo')->where('places', 'Dhaka')->first();
         $userShippingOutside = DB::table('shipping_charges')->where('roles', 'depo')->where('places', 'Outside Dhaka')->first();
-        return $this->view('emails.invoice')
+        return $this->view('user.emails.invoice')
             ->with([
                 'order' => $this->order,
                 'products' => $products,
