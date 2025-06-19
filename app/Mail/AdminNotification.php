@@ -38,7 +38,7 @@ class AdminNotification extends Mailable
             ->select('depo_infos.*','users.*')
             ->first();
 //        dd($depo);
-        return $this->view('emails.admin_notification')
+        return $this->view('user.emails.admin_notification')
             ->with([
                 'depo'=>$depo
             ])

@@ -48,7 +48,7 @@ class DepoLoginController extends Controller
             $depo = DepoInfo::where('id',$user->id)->first();
 
             if ($depo && $depo->action == 'Active') {
-                return redirect()->route('depo-welcome', ['id' => $user->id]);
+                return redirect()->route('home');
             }
             else{
                 return redirect()->back()->with('error','Account is not activate.');
@@ -63,7 +63,7 @@ class DepoLoginController extends Controller
     public function verify()
     {
         $user = \request('id');
-        return view('depo.step-verify',['id'=>$user]);
+        return view('user.depo.step-verify',['id'=>$user]);
     }
 
     public function owner_info(Request $request)
@@ -73,27 +73,30 @@ class DepoLoginController extends Controller
         $nidfront = $request->file('nidfront');
         $nidback = $request->file('nidback');
 
-        if($nidfront && $nidback) {
-            $originalname = time() .'front' . '.' . $nidfront->getClientOriginalExtension();
-            $path = $nidfront->storeAs('public/depo/nid', $originalname);
-            $path = str_replace('public/', '', $path);
-            $pathshared = $nidfront->storeAs('depo/nid', $originalname, 'shared');
-
-            $originalname2 = time() .'back' . '.' . $nidback->getClientOriginalExtension();
-            $path2 = $nidback->storeAs('public/depo/nid', $originalname2);
-            $path2 = str_replace('public/', '', $path2);
-            $path2shared = $nidback->storeAs('depo/nid', $originalname2, 'shared');
-              DepoInfo::where('id', $request->input('id'))->update([
-                    'owner_name' => $request->input('owner_name'),
-                    'trade_lic' => $request->input('lic'),
-                    'address' => $request->input('address'),
-                    'city' => $request->input('city'),
-                    'nid_front'=>$path,
-                    'nid_back'=>$path2,
-                ]);
 
 
+        if ($nidfront && $nidback) {
+            // Save front NID image
+            $originalname = time() . '_front.' . $nidfront->getClientOriginalExtension();
+            $path = 'depo/nid/' . $originalname;
+            $nidfront->move(public_path('depo/nid'), $originalname);
+
+            // Save back NID image
+            $originalname2 = time() . '_back.' . $nidback->getClientOriginalExtension();
+            $path2 = 'depo/nid/' . $originalname2;
+            $nidback->move(public_path('depo/nid'), $originalname2);
+
+            // Update DB
+            DepoInfo::where('id', $request->input('id'))->update([
+                'owner_name' => $request->input('owner_name'),
+                'trade_lic'  => $request->input('lic'),
+                'address'    => $request->input('address'),
+                'city'       => $request->input('city'),
+                'nid_front'  => $path,
+                'nid_back'   => $path2,
+            ]);
         }
+
 
         $adminEmails = DB::table('admins')->pluck('email')->toArray();
         foreach ($adminEmails as $email) {

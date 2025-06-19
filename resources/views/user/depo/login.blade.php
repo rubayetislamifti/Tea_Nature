@@ -5,7 +5,7 @@
 <head>
   <meta charset="UTF-8">
   <!--<title> Login and Registration Form in HTML & CSS | CodingLab </title>-->
-  <link rel="stylesheet" href="css/login.css">
+  <link rel="stylesheet" href="{{asset('user/css/login.css')}}">
   <!-- Fontawesome CDN Link -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,11 +23,11 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
   <!-- Libraries Stylesheet -->
-  <link href="lib/animate/animate.min.css" rel="stylesheet">
-  <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+  <link href="{{asset('user/lib/animate/animate.min.css')}}" rel="stylesheet">
+  <link href="{{asset('user/lib/owlcarousel/assets/owl.carousel.min.css')}}" rel="stylesheet">
 
   <!-- Template Stylesheet -->
-  <link href="css/style.css" rel="stylesheet">
+  <link href="{{asset('user/css/style.css')}}" rel="stylesheet">
 
 </head>
 
@@ -37,14 +37,14 @@
     <input type="checkbox" id="flip">
     <div class="cover">
       <div class="front">
-        <img src="images/tree.jpg" alt="TeanaturE">
+        <img src="{{asset('images/tree.jpg')}}" alt="TeanaturE">
         <div class="text">
           <span class="text-1"> <br>TeanaturE</span>
           <span class="text-2">Welcome to our Company </span>
         </div>
       </div>
       <div class="back">
-        <img class="backImg" src="images/tree.jpg" alt="TeanaturE">
+        <img class="backImg" src="{{asset('images/tree.jpg')}}" alt="TeanaturE">
         <div class="text">
           <span class="text-1"> <br> to our </span>
           <span class="text-2"> </span>
@@ -60,7 +60,7 @@
                     {{ Session::get('error') }}
                 </div>
                 @endif
-                
+
                 @if(Session::has('success'))
                 <div class="alert alert-danger">
                     {{ Session::get('success') }}

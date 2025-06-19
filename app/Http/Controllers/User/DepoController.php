@@ -15,7 +15,7 @@ class DepoController extends Controller
 {
     public function login()
     {
-        return view('depo.login');
+        return view('user.depo.login');
     }
 
     public function depoHome(){

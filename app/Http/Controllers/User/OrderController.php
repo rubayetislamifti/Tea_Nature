@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Models\Products;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class OrderController extends Controller
@@ -33,26 +34,44 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $productId = $request->input('product_id');
-        $quantity = (int) $request->input('quantity', 1);
+        $quantity = (int)$request->input('quantity', 1);
 
         $product = Products::findOrFail($productId);
 
         $cart = session()->get('cart', []);
 
-        if (isset($cart[$productId])) {
-            $cart[$productId]['quantity'] += $quantity;
-            $cart[$productId]['total_price'] = $cart[$productId]['quantity'] * $product->price;
-        } else {
-            $cart[$productId] = [
-                'product_id' => $productId,
-                'name' => $product->name,
-                'price' => $product->price,
-                'quantity' => $quantity,
-                'total_price' => $product->price * $quantity,
-            ];
-        }
 
+        if (Auth::user()->roles == 'users'){
+            if (isset($cart[$productId])) {
+                $cart[$productId]['quantity'] += $quantity;
+                $cart[$productId]['total_price'] = $cart[$productId]['quantity'] * $product->price;
+            } else {
+                $cart[$productId] = [
+                    'product_id' => $productId,
+                    'name' => $product->name,
+                    'price' => $product->price,
+                    'quantity' => $quantity,
+                    'total_price' => $product->price * $quantity,
+                ];
+            }
+        }
+        else
+            if (isset($cart[$productId])) {
+                $cart[$productId]['quantity'] += $quantity;
+                $cart[$productId]['total_price'] = $cart[$productId]['quantity'] * $product->cartoonprice;
+            } else {
+                $cart[$productId] = [
+                    'product_id' => $productId,
+                    'name' => $product->name,
+                    'price' => $product->cartoonprice,
+                    'quantity' => $quantity,
+                    'total_price' => $product->cartoonprice * $quantity,
+                ];
+            }
+
+//            dd($cart);
         session()->put('cart', $cart);
+
 
         return redirect()->back()->with('success', 'Product added to cart!');
     }

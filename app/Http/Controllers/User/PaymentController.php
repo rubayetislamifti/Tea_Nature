@@ -97,7 +97,6 @@ class PaymentController extends Controller
     }
 
     public function callback(Request $request){
-//        dd($request->query('paymentID'));
         $bkash = new bkash();
         $paymentId = $request->query('paymentID');
         $status = $request->query('status');

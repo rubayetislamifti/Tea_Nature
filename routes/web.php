@@ -151,7 +151,7 @@ Route::post('/loggedIn',[UserLoginController::class,'loggedIn'])->name('loggedIn
 Route::get('/logout',[UserLoginController::class,'logout'])->name('logout');
 /* User Login End*/
 Route::get('/email-success', function () {
-    return view('emails.success');
+    return view('user.emails.success');
 })->name('email-success');
 
 

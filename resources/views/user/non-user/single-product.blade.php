@@ -52,15 +52,24 @@
                     </script>
                 <!-- Prices -->
                 <div class="prices">
-                    @if(isset($products->previous_price))
-                        <span class="previous-price">{{$products->previous_price}}৳</span>
-                    @endif<!-- Previous price with strikethrough -->
-                    <span class="new-price">{{$products->price}}৳</span> <!-- New price -->
+                    @if(Auth::user()->roles =='users')
+                        @if(isset($products->previous_price))
+                            <span class="previous-price">{{$products->previous_price}}৳</span>
+                        @endif<!-- Previous price with strikethrough -->
+                        <span class="new-price">{{$products->price}}৳</span> <!-- New price -->
+                    @else
+                        <p class="mb-4">Quantity Per Carton: <strong>{{$products->cartoonqty}} pcs</strong>
+                        </p>
+                        <!-- Previous price with strikethrough -->
+                        <span class="new-price">Per Carton: {{$products->cartoonprice}}৳</span> <!-- New price -->
+                    @endif
+
                 </div>
 
                 <!-- Notice for Bulk Buyers -->
-                <p class="text-warning mb-2">Note: This is for individual users only. If you want to buy in bulk, please open an account.</p>
-
+                @if(!Auth::check())
+                    <p class="text-warning mb-2">Note: This is for individual users only. If you want to buy in bulk, please open an account.</p>
+                @endif
                 <form action="{{route('user.create-orders')}}" method="POST">
                     @csrf
                     <input type="hidden" name="product_id" value="{{$products->id}}">

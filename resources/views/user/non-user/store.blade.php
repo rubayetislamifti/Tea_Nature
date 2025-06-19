@@ -41,13 +41,19 @@
                                 <h4 class="mb-3">{{$prods->name}}</h4>
                                 <!--<p>{!! $prods->description !!}</p>-->
                                 <!-- Previous price with strikethrough -->
-                                @if(isset($prods->previous_price))
-                                    <div class="previous-price">
-                                        <span class="text-secondary">{{$prods->previous_price}}৳</span>
-                                    </div>
-                                @endif
+                                @if(Auth::user()->roles == 'users')
+                                    @if(isset($prods->previous_price))
+                                        <div class="previous-price">
+                                            <span class="text-secondary">{{$prods->previous_price}}৳</span>
+                                        </div>
+                                    @endif
+                                        <h4 class="text-primary" data-price="{{$prods->price}}">{{$prods->price}}৳</h4>
+                                @else
+                                    <p>Quantity per Carton: <strong>{{$prods->cartoonqty}} pcs</strong> </p>
+                                    <h4 class="text-primary">Per Carton: {{$prods->cartoonprice}}৳</h4>
                                 <!-- New price -->
-                                <h4 class="text-primary" data-price="{{$prods->price}}">{{$prods->price}}৳</h4>
+                                @endif
+
                             </div>
                             <div class="store-overlay">
                                 <a href="{{route('single-product',['id'=>$prods->id])}}" class="btn btn-primary rounded-pill py-2 px-4 m-2">More Detail <i
