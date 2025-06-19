@@ -48,13 +48,26 @@
                         <label>E-mail</label>
                         <input class="form-control" type="email" value="{{Auth::user()->email}}" placeholder="example@email.com" readonly>
                     </div>
+
                     <div class="col-md-6 form-group">
                         <label>Mobile No</label>
-                        <input class="form-control" type="text" value="{{Auth::user()->customerInfo->phone}}" placeholder="+123 456 789" readonly>
+                        <input class="form-control" type="text" value="
+                        @if(Auth::user()->roles == 'users')
+                            {{Auth::user()->customerInfo->phone}}
+                        @else
+                             {{Auth::user()->depoInfo->mobile}}
+                        @endif
+                        " placeholder="+123 456 789" readonly>
                     </div>
                     <div class="col-md-12 form-group">
                         <label>Shipping Address</label>
-                        <input class="form-control" type="text" value="{{Auth::user()->customerInfo->address}}"  name="address" placeholder="123 Street" required>
+                        <input class="form-control" type="text" value="
+                        @if(Auth::user()->roles == 'users')
+                            {{Auth::user()->customerInfo->address}}
+                        @else
+                            {{Auth::user()->depoInfo->address}}
+                        @endif
+                        "  name="address" placeholder="123 Street" required>
                     </div>
                     <div class="col-md-6 form-group">
                         <label>City</label>

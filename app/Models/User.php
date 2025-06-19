@@ -51,4 +51,9 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(Customer_Info::class, 'id', 'id');
     }
 
+    public function depoInfo()
+    {
+        return $this->hasOne(DepoInfo::class, 'id', 'id');
+    }
+
 }

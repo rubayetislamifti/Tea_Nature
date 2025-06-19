@@ -21,4 +21,9 @@ class DepoInfo extends Model
         'pic',
         'action',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id', 'id');
+    }
 }
