@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="ThemeMarch">
     <!-- Site Title -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-RLP6WBMWKY"></script>
     <script>
@@ -22,6 +23,15 @@
     </script>
     <title>{{config('app.name')}}</title>
     <link rel="stylesheet" href="{{asset('user/assets/css/style.css')}}">
+
+    <style>
+        @media print {
+            .cs-hide_print {
+                display: none !important;
+            }
+        }
+
+    </style>
 </head>
 
 <body>
@@ -48,8 +58,19 @@
                 <div class="cs-invoice_left">
                     <b class="cs-primary_color">Invoice To:</b>
                     <p>
-                        @if($roles->roles == 'users') {{$customer->name}} @else {{$customer->owner_name}} @endif<br>
-                        <span style="font-weight: bolder;color: black">@if($roles->roles == 'users') {{$customer->phone}}@else 0{{$customer->mobile}} @endif</span> <br>
+                        @if(Auth::user()->roles == 'users')
+                            {{Auth::user()->customerInfo->name}}
+                        @else
+                            {{Auth::user()->depoInfo->owner_name}}
+                        @endif
+                            <br>
+                        <span style="font-weight: bolder;color: black">
+                            @if(Auth::user()->roles == 'users')
+                                {{Auth::user()->customerInfo->phone}}
+                            @else
+                                0{{Auth::user()->depoInfo->mobile}}
+                            @endif
+                        </span> <br>
                         {{$customer->shipping_address}} <br>{{$customer->shipping_city}} - {{$customer->zip_code}}<br>
 
                     </p>
@@ -145,73 +166,65 @@
             </div>
 
             <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                            let subtotal = 0;
-                        const itemTotalPrices = document.querySelectorAll('.item-total-price');
-                        const products = [];
+                document.addEventListener('DOMContentLoaded', function () {
+                    let subtotal = 0;
+                    const itemTotalPrices = document.querySelectorAll('.item-total-price');
 
-                        itemTotalPrices.forEach(function(item, index) {
-                            const itemRow = item.closest('tr');
-                            const productName = itemRow.querySelector('td:nth-child(1)').textContent;
-                            const unitPrice = parseFloat(itemRow.querySelector('td:nth-child(2)').textContent.replace('৳', ''));
-                            const quantity = parseFloat(itemRow.querySelector('td:nth-child(3)').textContent);
-                            const totalPrice = parseFloat(item.textContent.replace('৳', ''));
+                    itemTotalPrices.forEach(function (item) {
+                        const itemRow = item.closest('tr');
+                        const productName = itemRow.querySelector('td:nth-child(1)').textContent.trim();
+                        const unitPrice = parseFloat(itemRow.querySelector('td:nth-child(2)').textContent.replace('৳', '').trim());
+                        const quantity = parseFloat(itemRow.querySelector('td:nth-child(3)').textContent.trim());
+                        const totalPrice = parseFloat(item.textContent.replace('৳', '').trim());
 
-                            subtotal += totalPrice;
+                        subtotal += totalPrice;
 
-                            // Send individual product tracking
-                            gtag('event', 'purchase', {
-                                'transaction_id': "{{ $customer->invoice_id }}",
-                                'affiliation': 'Online Store',
-                                'value': totalPrice,
-                                'currency': 'BDT',
-                                'items': [{
-                                    'item_name': productName,
-                                    'item_id': '{{ $product->id }}', // Use product ID or SKU if available
-                                    'price': unitPrice,
-                                    'quantity': quantity
-                                }]
-                            });
-
-                            let subtotal = 0;
-                            const itemTotalPrices = document.querySelectorAll('.item-total-price');
-
-                            itemTotalPrices.forEach(function(item) {
-                                subtotal += parseFloat(item.textContent.replace('৳', ''));
-                            });
-
-                            document.getElementById('subtotal').textContent = `৳${subtotal.toFixed(2)}`;
-
-                            const shippingChargesElement = document.getElementById('shipping-charges');
-                            const shippingCharges = parseFloat(shippingChargesElement.textContent.replace('৳', ''));
-
-                            const totalAmount = subtotal + shippingCharges;
-                            document.getElementById('total-amount').textContent = `৳${totalAmount.toFixed(2)}`;
-
-                            const paymentMethod = "{{ $customer->payment_method }}";
-
-                            if (paymentMethod === 'bKash') {
-                                gtag('event', 'purchase', {
-                                    'transaction_id': "{{ $customer->transaction_id }}",
-                                    'affiliation': 'Online Store',
-                                    'value': totalAmount,
-                                    'currency': 'BDT',
-                                    'payment_method': 'bKash'
-                                });
-                            } else if (paymentMethod === 'COD') {
-                                gtag('event', 'purchase', {
-                                    'transaction_id': "{{ $customer->invoice_id }}",
-                                    'affiliation': 'Online Store',
-                                    'value': totalAmount,
-                                    'currency': 'BDT',
-                                    'payment_method': 'Cash On Delivery'
-                                });
-                            }
+                        // Send individual product tracking
+                        gtag('event', 'purchase', {
+                            'transaction_id': "{{ $customer->invoice_id }}",
+                            'affiliation': 'Online Store',
+                            'value': totalPrice,
+                            'currency': 'BDT',
+                            'items': [{
+                                'item_name': productName,
+                                'item_id': '{{ $product->id }}', // You must loop this in Blade for each product!
+                                'price': unitPrice,
+                                'quantity': quantity
+                            }]
                         });
+                    });
 
-                </script>
+                    // Update Subtotal
+                    document.getElementById('subtotal').textContent = `৳${subtotal.toFixed(2)}`;
 
+                    // Calculate shipping charge and total
+                    const shippingChargesElement = document.getElementById('shipping-charges');
+                    const shippingCharges = parseFloat(shippingChargesElement.textContent.replace('৳', '').trim()) || 0;
 
+                    const totalAmount = subtotal + shippingCharges;
+                    document.getElementById('total-amount').textContent = `৳${totalAmount.toFixed(2)}`;
+
+                    const paymentMethod = "{{ $customer->payment_method }}";
+
+                    if (paymentMethod === 'bKash') {
+                        gtag('event', 'purchase', {
+                            'transaction_id': "{{ $customer->transaction_id }}",
+                            'affiliation': 'Online Store',
+                            'value': totalAmount,
+                            'currency': 'BDT',
+                            'payment_method': 'bKash'
+                        });
+                    } else if (paymentMethod === 'COD') {
+                        gtag('event', 'purchase', {
+                            'transaction_id': "{{ $customer->invoice_id }}",
+                            'affiliation': 'Online Store',
+                            'value': totalAmount,
+                            'currency': 'BDT',
+                            'payment_method': 'Cash On Delivery'
+                        });
+                    }
+                });
+            </script>
 
 
             <div class="cs-note">
@@ -236,6 +249,23 @@
         </div>
     </div>
 </div>
+<script>
+    document.getElementById("download_btn").addEventListener("click", function () {
+        // Select the invoice area you want to convert to PDF
+        const invoiceElement = document.querySelector(".cs-invoice"); // Change selector if needed
+
+        const opt = {
+            margin:       0.5,
+            filename:     'invoice_{{ $customer->invoice_id }}.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2 },
+            jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+        };
+
+        html2pdf().set(opt).from(invoiceElement).save();
+    });
+</script>
+
 <script src="{{asset('assets/js/jquery.min.js')}}"></script>
 <script src="{{asset('assets/js/jspdf.min.js')}}"></script>
 <script src="{{asset('assets/js/html2canvas.min.js')}}"></script>

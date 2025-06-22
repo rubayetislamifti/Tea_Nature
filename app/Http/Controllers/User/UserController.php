@@ -379,8 +379,8 @@ class UserController extends Controller
         }
 
         $cart = session()->get('cart', []);
-        $userShipping = DB::table('shipping_charges')->where('roles', 'users')->where('places', 'Dhaka')->first();
-        $userShippingOutside = DB::table('shipping_charges')->where('roles', 'users')->where('places', 'Outside Dhaka')->first();
+        $userShipping = DB::table('shipping_charges')->where('roles', Auth::user()->roles)->where('places', 'Dhaka')->first();
+        $userShippingOutside = DB::table('shipping_charges')->where('roles', Auth::user()->roles)->where('places', 'Outside Dhaka')->first();
         return view('user.user.checkout',[
             'charge'=>$userShipping,
             'outside'=>$userShippingOutside,
@@ -421,14 +421,14 @@ class UserController extends Controller
 //        dd($customer);
 
 
-        if ($role->roles == 'users') {
-            $shippingDhaka = DB::table('shipping_charges')->where('roles', 'users')->where('places', 'Dhaka')->first();
-            $shippingOther = DB::table('shipping_charges')->where('roles', 'users')->where('places', '!=', 'Dhaka')->first();
-        }
-        else {
-            $shippingDhaka = DB::table('shipping_charges')->where('roles', 'depo')->where('places', 'Dhaka')->first();
-            $shippingOther = DB::table('shipping_charges')->where('roles', 'depo')->where('places', '!=', 'Dhaka')->first();
-        }
+//        if ($role->roles == 'users') {
+            $shippingDhaka = DB::table('shipping_charges')->where('roles', Auth::user()->roles)->where('places', 'Dhaka')->first();
+            $shippingOther = DB::table('shipping_charges')->where('roles', Auth::user()->roles)->where('places', '!=', 'Dhaka')->first();
+//        }
+//        else {
+//            $shippingDhaka = DB::table('shipping_charges')->where('roles', 'depo')->where('places', 'Dhaka')->first();
+//            $shippingOther = DB::table('shipping_charges')->where('roles', 'depo')->where('places', '!=', 'Dhaka')->first();
+//        }
 
         return view('user.user.invoice',['infos'=>$infos,'customer'=>$customer,
             'shippingDhaka'=>$shippingDhaka,'shippingOther'=>$shippingOther,'date'=>$now,'roles'=>$role]);

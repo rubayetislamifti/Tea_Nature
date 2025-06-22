@@ -27,10 +27,15 @@
         <div class="row">
             <div class="col-lg-12 mb-4">
                 <h4 class="font-weight-semi-bold">Delivery Charge</h4>
-                <p>For Dhaka <strong>
+                <p>For Dhaka
+                    <strong>
                         @if(isset($charge))
-                        ৳{{$charge->price}}
-                        @endif</strong>.</p>
+                                ৳{{$charge->price}}
+                        @else
+                                ৳{{$charge->price}}
+                        @endif
+                    </strong>.
+                </p>
                 <p>For Outside Dhaka <strong>@if(isset($outside))
                             ৳{{$outside->price}}
                         @endif</strong>.</p>
@@ -51,27 +56,15 @@
 
                     <div class="col-md-6 form-group">
                         <label>Mobile No</label>
-                        <input class="form-control" type="text" value="
-                        @if(Auth::user()->roles == 'users')
-                            {{Auth::user()->customerInfo->phone}}
-                        @else
-                             {{Auth::user()->depoInfo->mobile}}
-                        @endif
-                        " placeholder="+123 456 789" readonly>
+                        <input class="form-control" type="text" value="@if(Auth::user()->roles == 'users'){{Auth::user()->customerInfo->phone}}@else 0{{Auth::user()->depoInfo->mobile}}@endif" placeholder="+123 456 789" readonly>
                     </div>
                     <div class="col-md-12 form-group">
                         <label>Shipping Address</label>
-                        <input class="form-control" type="text" value="
-                        @if(Auth::user()->roles == 'users')
-                            {{Auth::user()->customerInfo->address}}
-                        @else
-                            {{Auth::user()->depoInfo->address}}
-                        @endif
-                        "  name="address" placeholder="123 Street" required>
+                        <input class="form-control" type="text" value="@if(Auth::user()->roles == 'users'){{Auth::user()->customerInfo->address}}@else{{Auth::user()->depoInfo->address}}@endif"  name="address" placeholder="123 Street" required>
                     </div>
                     <div class="col-md-6 form-group">
                         <label>City</label>
-                        <input class="form-control" type="text" value="{{Auth::user()->customerInfo->distric}}"  name="city" placeholder="New York" required>
+                        <input class="form-control" type="text" value="@if(Auth::user()->roles == 'users'){{Auth::user()->customerInfo->distric}}@else{{Auth::user()->depoInfo->city}}@endif"  name="city" placeholder="New York" required>
                     </div>
 
                     <div class="col-md-6 form-group">

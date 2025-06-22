@@ -17,8 +17,15 @@ class PaymentController extends Controller
 {
     public function index(Request $request){
         $userId = Auth::user()->id;
-        $shipping = Auth::user()->customerInfo->address;
-        $projectid = Auth::user()->customerInfo->distric;
+
+        if (Auth::user()->roles == 'users') {
+            $shipping = Auth::user()->customerInfo->address;
+            $projectid = Auth::user()->customerInfo->distric;
+        }
+        else {
+            $shipping = Auth::user()->depoInfo->address;
+            $projectid = Auth::user()->depoInfo->city;
+        }
         $projectname = $request->input('zip');
         $service = $request->input('paymentMethod');
         $amount = $request->input('total');
