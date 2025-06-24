@@ -506,8 +506,6 @@ class DashboardController extends Controller
             ->where('orders.invoice_id', $request->input('prod_id'))
             ->value('users.email');
 
-//        dd($userEmail);
-
         Mail::to($userEmail)->send(new OrderShipped($request->input('delivery_date')));
         return redirect()->back();
     }

@@ -37,21 +37,28 @@ class OrderController extends Controller
         $quantity = (int)$request->input('quantity', 1);
 
         $product = Products::findOrFail($productId);
-
+        if (Auth::check()) {
+            $price = Auth::user()->roles === 'depo' ? $product->cartoonprice : $product->price;
+        }
         $cart = session()->get('cart', []);
 
 
-        if (Auth::user()->roles == 'users'){
+        if (Auth::check()){
             if (isset($cart[$productId])) {
                 $cart[$productId]['quantity'] += $quantity;
-                $cart[$productId]['total_price'] = $cart[$productId]['quantity'] * $product->price;
+                if (Auth::user()->roles == 'depo'){
+                    $cart[$productId]['total_price'] = $cart[$productId]['quantity'] * $product->cartoonprice;
+                }
+                else {
+                    $cart[$productId]['total_price'] = $cart[$productId]['quantity'] * $product->price;
+                }
             } else {
                 $cart[$productId] = [
                     'product_id' => $productId,
                     'name' => $product->name,
-                    'price' => $product->price,
                     'quantity' => $quantity,
-                    'total_price' => $product->price * $quantity,
+                    'price' => $price,
+                    'total_price' => $price * $quantity,
                 ];
             }
         }
@@ -63,9 +70,9 @@ class OrderController extends Controller
                 $cart[$productId] = [
                     'product_id' => $productId,
                     'name' => $product->name,
-                    'price' => $product->cartoonprice,
+                    'price' => $product->price,
                     'quantity' => $quantity,
-                    'total_price' => $product->cartoonprice * $quantity,
+                    'total_price' => $product->price * $quantity,
                 ];
             }
 

@@ -36,10 +36,20 @@
                             <strong>Email:</strong> {{Auth::user()->email}}
                         </div>
                         <div class="mb-3">
-                            <strong>Phone:</strong> {{Auth::user()->phone}}
+                            <strong>Phone:</strong>
+                            @if(Auth::user()->roles == 'users')
+                                {{Auth::user()->customerInfo->phone}}
+                            @else
+                                0{{Auth::user()->depoInfo->mobile}}
+                            @endif
                         </div>
                         <div class="mb-3">
-                            <strong>Address:</strong> {{Auth::user()->address}}, {{Auth::user()->distric}}
+                            <strong>Address:</strong>
+                            @if(Auth::user()->roles == 'users')
+                                {{Auth::user()->customerInfo->address}}, {{Auth::user()->customerInfo->distric}}
+                            @else
+                                {{Auth::user()->depoInfo->address}}, {{Auth::user()->depoInfo->city}}
+                            @endif
                         </div>
                         <!-- Add more user information as needed -->
                     </div>
@@ -52,16 +62,16 @@
                         Profile Picture
                     </div>
                     <div class="card-body text-center">
-                        @if(isset(Auth::user()->image))
-                            <img src="{{asset('storage/'.$info->image)}}" alt="Profile Picture" class="img-fluid rounded-circle" style="max-width: 300px;" />
-
-                            <!-- Display profile picture or initials -->
+                        @if(Auth::user()->roles == 'users' && isset(Auth::user()->customerInfo->image))
+                            <img src="{{asset('user_pic/'.Auth::user()->customerInfo->image)}}" alt="Profile Picture" class="img-fluid rounded-circle" style="max-width: 300px;" />
+                        @elseif(Auth::user()->roles == 'depo' && isset(Auth::user()->depoInfo->pic))
+                            <img src="{{asset('depo_pic/'.Auth::user()->depoInfo->pic)}}" alt="Profile Picture" class="img-fluid rounded-circle" style="max-width: 300px;" />
                         @else
                             <div id="profile-display">
-                                <!-- JavaScript will populate this div -->
 
                             </div>
                         @endif
+
                     </div>
                 </div>
             </div>

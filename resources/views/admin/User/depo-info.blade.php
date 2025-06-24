@@ -35,7 +35,7 @@
                                             <div class="card-body">
                                                 <div class="row">
                                                     <div class="col-md-2">
-                                                        <img src="{{ asset('storage/'.$customers->pic) }}" alt="image" class="img-fluid">
+                                                        <img src="{{ asset('depo_pic/'.$customers->pic) }}" alt="image" class="img-fluid">
                                                     </div>
                                                     <div class="col-md-10">
                                                         <h5 class="card-title">{{ $customers->name }}</h5>
@@ -82,13 +82,13 @@
                                                             </div>
                                                             <div class="form-group">
 
-                                                               <img src="{{asset('storage/'.$customers->nid_front)}}" width="100%" height="100%"/><br>
-                                                               <img src="{{asset('storage/'.$customers->nid_back)}}" width="100%" height="100%"/>
+                                                               <img src="{{asset('depo/'.$customers->nid_front)}}" width="100%" height="100%"/><br>
+                                                               <img src="{{asset('depo/'.$customers->nid_back)}}" width="100%" height="100%"/>
                                                             </div>
 
                                                             <div class="form-group">
                                                                 <label for="description{{$customers->id}}">Email</label>
-                                                                <input class="form-control" id="description" name="description" value="{{ $customers->email }}" readonly>
+                                                                <input class="form-control"  name="description" value="{{ $customers->email }}" readonly>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="category">Address</label>
@@ -119,7 +119,7 @@
                                                             </div>
                                                             <div class="form-group">
 
-                                                                <img src="{{asset('storage/'.$customers->pic)}}" alt="{{$customers->name}}" width="50">
+                                                                <img src="{{asset('depo_pic/'.$customers->pic)}}" alt="{{$customers->name}}" width="50">
                                                             </div>
                                                                 <button type="submit" class="btn btn-primary">Update</button>
                                                         </form>

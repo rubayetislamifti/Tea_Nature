@@ -43,7 +43,7 @@ class PaymentController extends Controller
                     'quantity' => $item['quantity'],
                     'price' => $amount,
                     'payment_method' => $service,
-                    'order_status' => 'Completed',
+                    'order_status' => 'Processing',
                     'shipping_address' => $shipping,
                     'shipping_city' => $projectid,
                     'zip_code' => $projectname,

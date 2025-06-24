@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Customer_Info;
+use App\Models\DepoInfo;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -120,44 +121,82 @@ class NewUserController extends Controller
 
     public function upload_user_data(Request $request)
     {
-//        dd(Auth::user()->id);
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email',
-            'phone' => 'nullable|string|max:20',
-            'address' => 'nullable|string|max:255',
-            'city' => 'nullable|string|max:100',
-            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif',
-        ]);
+        if (Auth::user()->roles == 'users') {
+            $request->validate([
+                'name' => 'sometimes|required|string|max:255',
+                'email' => 'sometimes|required|email',
+                'phone' => 'sometimes|nullable|string|max:20',
+                'address' => 'sometimes|nullable|string|max:255',
+                'city' => 'sometimes|nullable|string|max:100',
+                'profile_picture' => 'sometimes|nullable|image|mimes:jpeg,png,jpg,gif',
+            ]);
 
 
-        $imageName = null;
+            $imageName = null;
 
-        if ($request->hasFile('profile_picture')) {
-            $img = $request->file('profile_picture');
-            $imageName = time() . '_' . $img->getClientOriginalName();
-            $img->move(public_path('user_pic'), $imageName);
+            if ($request->hasFile('profile_picture')) {
+                $img = $request->file('profile_picture');
+                $imageName = time() . '_' . $img->getClientOriginalName();
+                $img->move(public_path('user_pic'), $imageName);
 
-            // Update image path in Customer_Info
+                // Update image path in Customer_Info
+                Customer_Info::where('id', Auth::user()->id)->update([
+                    'image' => $imageName
+                ]);
+            }
+
+
             Customer_Info::where('id', Auth::user()->id)->update([
-                'image' => $imageName
+                'name' => $request->input('name'),
+                'email' => $request->input('email'),
+                'phone' => $request->input('phone'),
+                'address' => $request->input('address'),
+                'distric' => $request->input('city'),
+            ]);
+
+            User::where('id', Auth::user()->id)->update([
+                'name' => $request->input('name'),
+                'email' => $request->input('email')
             ]);
         }
+        else{
+            $request->validate([
+                'name' => 'sometimes|required|string|max:255',
+                'owner_name' => 'sometimes|required|string|max:255',
+                'email' => 'sometimes|required|email',
+                'phone' => 'sometimes|nullable|string|max:20',
+                'address' => 'sometimes|nullable|string|max:255',
+                'city' => 'sometimes|nullable|string|max:100',
+                'profile_picture' => 'sometimes|nullable|image|mimes:jpeg,png,jpg,gif',
+            ]);
 
-        // Update other Customer_Info fields
-        Customer_Info::where('id', Auth::user()->id)->update([
-            'name'    => $request->input('name'),
-            'email'   => $request->input('email'),
-            'phone'   => $request->input('phone'),
-            'address' => $request->input('address'),
-            'distric' => $request->input('city'),
-        ]);
 
-        // Update User table as well
-        User::where('id', Auth::user()->id)->update([
-            'name'  => $request->input('name'),
-            'email' => $request->input('email')
-        ]);
+            $imageName = null;
+
+            if ($request->hasFile('profile_picture')) {
+                $img = $request->file('profile_picture');
+                $imageName = time() . '_' . $img->getClientOriginalName();
+                $img->move(public_path('depo_pic'), $imageName);
+
+                // Update image path in Customer_Info
+                DepoInfo::where('id', Auth::user()->id)->update([
+                    'pic' => $imageName
+                ]);
+            }
+
+
+            DepoInfo::where('id', Auth::user()->id)->update([
+                'owner_name' => $request->input('name'),
+                'mobile' => $request->input('phone'),
+                'address' => $request->input('address'),
+                'city' => $request->input('city'),
+            ]);
+
+            User::where('id', Auth::user()->id)->update([
+                'name' => $request->input('name'),
+                'email' => $request->input('email')
+            ]);
+        }
 
         return redirect()->back()->with('success', 'User data updated successfully.');
     }

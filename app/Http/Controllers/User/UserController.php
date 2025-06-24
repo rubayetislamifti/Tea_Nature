@@ -231,22 +231,16 @@ class UserController extends Controller
 
     public function order_history()
     {
-        $id = \request('id');
-        $user = Customer_Info::find($id);
-        $mar = DB::table('marqueetexts')->first();
-        $contact = DB::table('contacts')->first();
-        $product = DB::table('orders')->where('user_id',$user->id)
-            ->whereIn('order_status',['Processing','Shipping','Delivered'])
+//        dd(Auth::user()->id);
+
+        $product = DB::table('orders')->where('user_id',Auth::user()->id)
             ->join('products','orders.product_id','=','products.id')
             ->select('orders.*','products.*','orders.price as total_price')
         ->get();
-        $ip = request()->ip();
-        $count = DB::table('orders')
-            //->where('user_ip_address',$ip)
-            ->where('user_id',$user->id)
-            ->where('order_status','Pending')->count();
-        return view('user.order-history',['id' => $id,'info'=>$user,'product'=>$product,'count'=>$count,
-            'mar'=>$mar,'contact'=>$contact]);
+
+//        dd($product);
+
+        return view('user.user.order-history',['product'=>$product]);
     }
 
     public function my_profile()

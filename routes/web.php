@@ -124,7 +124,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/home/product/cart',[UserController::class,'cart'])->name('cart');
 
-    Route::get('/home/my-profile/order-history',[UserController::class,'order_history'])->name('order_history');
+    Route::get('/my-profile/order-history',[UserController::class,'order_history'])->name('order_history');
 
     Route::get('/home/my-profile',[UserController::class,'my_profile'])->name('my_profile');
 

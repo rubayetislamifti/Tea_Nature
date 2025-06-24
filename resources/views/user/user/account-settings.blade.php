@@ -38,6 +38,12 @@
                                 <label for="name" class="form-label">Name:</label>
                                 <input type="text" class="form-control" id="name" name="name" value="{{Auth::user()->name}}">
                             </div>
+                            @if(Auth::user()->roles == 'depo')
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Owner Name:</label>
+                                    <input type="text" class="form-control" id="name" name="ownername" value="{{Auth::user()->depoInfo->owner_name}}">
+                                </div>
+                            @endif
                             <!-- Email Input -->
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email:</label>
@@ -46,16 +52,16 @@
                             <!-- Phone Input -->
                             <div class="mb-3">
                                 <label for="phone" class="form-label">Phone:</label>
-                                <input type="text" class="form-control" id="phone" name="phone" value="{{Auth::user()->customerInfo->phone}}">
+                                <input type="text" class="form-control" id="phone" name="phone" value="@if(Auth::user()->roles == 'users') {{Auth::user()->customerInfo->phone}} @else 0{{Auth::user()->depoInfo->mobile}} @endif">
                             </div>
                             <!-- Address Input -->
                             <div class="mb-3">
                                 <label for="address" class="form-label">Address:</label>
-                                <input type="text" class="form-control" id="address" name="address" value="{{Auth::user()->customerInfo->address}}">
+                                <input type="text" class="form-control" id="address" name="address" value="@if(Auth::user()->roles == 'users') {{Auth::user()->customerInfo->address}} @else {{Auth::user()->depoInfo->address}} @endif">
                             </div>
                             <div class="mb-3">
                                 <label for="address" class="form-label">City:</label>
-                                <input type="text" class="form-control" id="address" name="city" value="{{Auth::user()->customerInfo->distric}}">
+                                <input type="text" class="form-control" id="address" name="city" value="@if(Auth::user()->roles == 'users') {{Auth::user()->customerInfo->distric}} @else {{Auth::user()->depoInfo->city}} @endif">
                             </div>
                             <!-- Profile Picture Upload -->
                             <div class="mb-3">
@@ -81,10 +87,10 @@
                         Profile Picture
                     </div>
                     <div class="card-body text-center">
-                        @if(isset(Auth::user()->customerInfo->image))
+                        @if(Auth::user()->roles == 'users')
                             <img src="{{asset('user_pic/'.Auth::user()->customerInfo->image)}}" alt="Profile Picture" class="img-fluid rounded-circle" style="max-width: 300px;" />
-
-                            <!-- Display profile picture or initials -->
+                        @else
+                            <img src="{{asset('depo_pic/'.Auth::user()->depoInfo->pic)}}" alt="Profile Picture" class="img-fluid rounded-circle" style="max-width: 300px;" />
                         @endif<!-- Display profile picture or initials -->
                         <div id="profile-display">
                             <!-- JavaScript will populate this div -->
