@@ -106,8 +106,8 @@
                                         <tr>
                                             <td>{{ $testimonial->title }}</td>
                                             <td>
-                                                <a href="{{asset('storage/'.$testimonial->image)}}" target="_blank">
-                                                    <img src="{{asset('storage/'.$testimonial->image)}}" />
+                                                <a href="{{asset('slider/'.$testimonial->image)}}" target="_blank">
+                                                    <img src="{{asset('slider/'.$testimonial->image)}}" />
                                                 </a>
 
                                             </td>

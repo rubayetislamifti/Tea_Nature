@@ -9,7 +9,7 @@
 
             @foreach($slider as $index => $slide)
                 <div class="carousel-item @if($index == 0) active @endif">
-                    <img class="w-100" src="{{ $slide->image ? asset('storage/'.$slide->image) : 'https://via.placeholder.com/1920x820' }}" alt="Slide Image">
+                    <img class="w-100" src="{{ $slide->image ? asset('slider/'.$slide->image) : 'https://via.placeholder.com/1920x820' }}" alt="Slide Image">
 
                     <div class="carousel-caption">
                         <div class="container">

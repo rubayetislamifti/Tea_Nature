@@ -856,6 +856,7 @@ class DashboardController extends Controller
                 $img->move(public_path('slider'), $imageName);
 
                 SliderImg::create([
+                    'title'=>$request->input('name'),
                     'image' => $imageName,
                 ]);
 

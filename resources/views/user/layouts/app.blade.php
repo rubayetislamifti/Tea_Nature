@@ -104,7 +104,7 @@
 
 
     <!-- Favicon -->
-    <link href="{{asset('img/logo.png')}}" rel="icon">
+    <link href="{{asset('user/img/logo.png')}}" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -117,7 +117,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
-    <!-- Libraries Stylesheet --><script src="https://kit.fontawesome.com/a87236255f.js" crossorigin="anonymous"></script>
+    <!-- Libraries Stylesheet -->
+    <script src="https://kit.fontawesome.com/a87236255f.js" crossorigin="anonymous"></script>
     <link href="{{asset('user/lib/animate/animate.min.css')}}" rel="stylesheet">
     <link href="{{asset('user/lib/owlcarousel/assets/owl.carousel.min.css')}}" rel="stylesheet">
     <!-- Customized Bootstrap Stylesheet -->
@@ -125,16 +126,6 @@
 
     <!-- Template Stylesheet -->
     <link href="{{asset('user/css/style.css')}}" rel="stylesheet">
-
-    <!-- Libraries Stylesheet -->
-    <link href="lib/animate/animate.min.css" rel="stylesheet">
-    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/a87236255f.js" crossorigin="anonymous"></script>
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Template Stylesheet -->
-    <link href="css/style.css" rel="stylesheet">
 
     <!-- google font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -467,7 +458,7 @@
     <div class="container">
         <nav class="navbar navbar-expand-lg bg-white navbar-light py-2 py-lg-0">
             <a href="{{route('home')}}" class="navbar-brand">
-                <img class="img-fluid" src="{{asset('img/logo.png')}}" alt="Logo">
+                <img class="img-fluid" src="{{asset('user/img/logo.png')}}" alt="Logo">
             </a>
             <button type="button" class="navbar-toggler ms-auto me-0" data-bs-toggle="collapse"
                     data-bs-target="#navbarCollapse">
