@@ -118,7 +118,7 @@
                         <h6 class="mb-3">Payment</h6>
                          <div class="form-group">
                            <div class="custom-control custom-radio">
-                               <input type="radio" class="custom-control-input" name="paymentMethod" id="bkash" value="Bkash">
+{{--                               <input type="radio" class="custom-control-input" name="paymentMethod" id="bkash" value="Bkash">--}}
                                <label class="custom-control-label" for="bkash">bKash (Service Currently Off)</label>
                            </div>
                         </div>

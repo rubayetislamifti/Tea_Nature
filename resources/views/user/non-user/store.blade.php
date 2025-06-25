@@ -41,7 +41,7 @@
                                 <h4 class="mb-3">{{$prods->name}}</h4>
                                 <!--<p>{!! $prods->description !!}</p>-->
                                 <!-- Previous price with strikethrough -->
-                                @if(Auth::user()->roles == 'users')
+                                @if(!Auth::check() || (Auth::user()->roles === 'users'))
                                     @if(isset($prods->previous_price))
                                         <div class="previous-price">
                                             <span class="text-secondary">{{$prods->previous_price}}৳</span>

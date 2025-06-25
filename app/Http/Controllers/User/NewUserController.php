@@ -22,77 +22,72 @@ class NewUserController extends Controller
     {
         $category = DB::table('categories')->where('status','Active')->inRandomOrder()->take(3)->get();
         $product = DB::table('products')->inRandomOrder()->take(3)->get();
-        $text = DB::table('marqueetexts')->first();
-        $contact = DB::table('contacts')->first();
+
         $slider = DB::table('slider_imgs')->inRandomOrder()->take(3)->get();
         $producttext = DB::table('product_pages')->first();
         $storetext = DB::table('store_pages')->first();
         return view('user.non-user.welcome',[
-            'category'=>$category,'product'=>$product,'text'=>$text,'contact'=>$contact,'slider'=>$slider,
+            'category'=>$category,'product'=>$product,'slider'=>$slider,
             'prodText'=>$producttext,'stText'=>$storetext]);
     }
 
     public function product()
     {
         $category = DB::table('categories')->where('status','Active')->get();
-        $text = DB::table('marqueetexts')->first();
-        $contact = DB::table('contacts')->first();
         $producttext = DB::table('product_pages')->first();
-        return view('user.non-user.product',['category'=>$category,'text'=>$text,'contact'=>$contact,'prodText'=>$producttext]);
+        return view('user.non-user.product',['category'=>$category,'prodText'=>$producttext]);
     }
 
     public function store()
     {
         $product = DB::table('products')->get();
-        $text = DB::table('marqueetexts')->first();
-        $contact = DB::table('contacts')->first();
+
         $storetext = DB::table('store_pages')->first();
-        return view('user.non-user.store',['product'=>$product,'text'=>$text,'contact'=>$contact,'stText'=>$storetext]);
+        return view('user.non-user.store',['product'=>$product,'stText'=>$storetext]);
     }
 
     public function contact()
     {
-        $text = DB::table('marqueetexts')->first();
+
         $contact = DB::table('contacts')->first();
-        return view('user.non-user.contact',['text'=>$text,'contact'=>$contact]);
+        return view('user.non-user.contact',[]);
     }
 
     public function testimonial()
     {
-        $text = DB::table('marqueetexts')->first();
+
         $testimonials = DB::table('testimonials')->get();
-        $contact = DB::table('contacts')->first();
-        return view('user.non-user.testimonial',['text'=>$text,'testimonials'=>$testimonials,'contact'=>$contact]);
+
+        return view('user.non-user.testimonial',['testimonials'=>$testimonials,]);
     }
 
     public function blog()
     {
         $id = \request('id');
         $blogs = DB::table('blogs')->where('id',$id)->first();
-        $text = DB::table('marqueetexts')->first();
-        $contact = DB::table('contacts')->first();
-        return view('user.non-user.blog',['text'=>$text,'blogs'=>$blogs,'contact'=>$contact]);
+
+        return view('user.non-user.blog',['blogs'=>$blogs]);
     }
 
     public function blogList()
     {
-        $text = DB::table('marqueetexts')->first();
+
         $blogs = DB::table('blogs')->get();
-        $contact = DB::table('contacts')->first();
-        return view('user.non-user.blog-list',['text'=>$text,'blogs'=>$blogs,'contact'=>$contact]);
+
+        return view('user.non-user.blog-list',['blogs'=>$blogs]);
     }
 
     public function about(){
-        $text = DB::table('marqueetexts')->first();
+
         $about = DB::table('abouts')->first();
-        $contact = DB::table('contacts')->first();
-        return view('user.non-user.about',['text'=>$text,'about'=>$about,'contact'=>$contact]);
+
+        return view('user.non-user.about',['about'=>$about]);
     }
 
     public function feature()
     {
-        $text = DB::table('marqueetexts')->first();
-        return view('user.non-user.feature',['text'=>$text]);
+
+        return view('user.non-user.feature');
     }
 
     public function page()
@@ -102,11 +97,11 @@ class NewUserController extends Controller
 
     public function single_product()
     {
-        $text = DB::table('marqueetexts')->first();
+
         $prod = \request('id');
         $products = DB::table('products')->where('id',$prod)->first();
-        $contact = DB::table('contacts')->first();
-        return view('user.non-user.single-product',['products'=>$products,'text'=>$text,'contact'=>$contact]);
+
+        return view('user.non-user.single-product',['products'=>$products,]);
     }
 
     public function my_profile()

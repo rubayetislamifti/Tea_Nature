@@ -124,15 +124,15 @@ class PaymentController extends Controller
         $executionResult = $bkash->executePayment($paymentId);
 
         if ($executionResult['status']) {
-            return response()->route('verifyPayment', ['paymentID' => $paymentId]);
+            return $this->verifyPayment($paymentId);
         }
 
         return response()->json($executionResult, 500);
     }
 
-    public function verifyPayment(Request $request)
+    public function verifyPayment(Request $request, string $paymentId)
     {
-        $paymentId = $request->query('paymentID');
+//        $paymentId = $request->query('paymentID');
 
         if (!$paymentId) {
             return response()->json(['error' => 'paymentID not provided'], 400);

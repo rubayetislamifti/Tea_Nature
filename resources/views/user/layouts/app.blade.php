@@ -478,7 +478,7 @@
                             <a href="{{route('about')}}" class="dropdown-item">About</a>
                             <a href="{{route('blog-list')}}" class="dropdown-item">Blog Article</a>
                             <a href="{{route('contact')}}" class="dropdown-item">Contact</a>
-                            <a href="{{route('testimonial')}}" class="dropdown-item">Testimonial</a>
+                            <a href="{{route('user.testimonial')}}" class="dropdown-item">Testimonial</a>
                         </div>
                     </div>
 
@@ -590,64 +590,43 @@
         class="bi bi-arrow-up"></i></a>
 
 
-<!-- JavaScript Libraries -->
+<!-- Core libraries (jQuery first, then Bootstrap 5 bundle which already includes Popper) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Only for Bootstrap 4 -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
 
-<script src="{{asset('user/lib/wow/wow.min.js')}}"></script>
-<script src="{{asset('user/lib/easing/easing.min.js')}}"></script>
-<script src="{{asset('user/lib/waypoints/waypoints.min.js')}}"></script>
-<script src="{{asset('user/lib/owlcarousel/owl.carousel.min.js')}}"></script>
-<!-- TrustBox script -->
-<script type="text/javascript" src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js" async></script>
-<!-- End TrustBox script -->
+<!-- Third-party vendor plugins -->
+<script src="{{ asset('user/lib/wow/wow.min.js') }}"></script>
+<script src="{{ asset('user/lib/easing/easing.min.js') }}"></script>
+<script src="{{ asset('user/lib/waypoints/waypoints.min.js') }}"></script>
+<script src="{{ asset('user/lib/owlcarousel/owl.carousel.min.js') }}"></script>
 
+<!-- Trustpilot -->
+<script src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js" async></script>
 
-<!-- Template Javascript -->
-<script src="{{asset('user/js/main.js')}}"></script>
+<!-- Site-wide JS -->
+<script src="{{ asset('user/js/main.js') }}"></script>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="lib/wow/wow.min.js"></script>
-<script src="lib/easing/easing.min.js"></script>
-<script src="lib/waypoints/waypoints.min.js"></script>
-<script src="lib/owlcarousel/owl.carousel.min.js"></script>
-
-<!-- Template Javascript -->
-<script src="js/main.js"></script>
-
-<!-- JavaScript Libraries -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="lib/wow/wow.min.js"></script>
-<script src="lib/easing/easing.min.js"></script>
-<script src="lib/waypoints/waypoints.min.js"></script>
-<script src="lib/owlcarousel/owl.carousel.min.js"></script>
+<!-- Google Analytics item-view event -->
 @if(isset($products))
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        gtag('event', 'view_item', {
-            'event_category': 'Products',
-            'event_label': '{{$products->name}}',
-            'value': {{$products->price}},  // Optional, the value of the product
-            'items': [{
-                'id': '{{$products->id}}',
-                'name': '{{$products->name}}',
-                'category': '{{$products->category}}',  // Replace with actual category if available
-                'price': {{$products->price}}
-            }]
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            gtag('event', 'view_item', {
+                event_category: 'Products',
+                event_label: '{{ $products->name }}',
+                value: {{ $products->price }},
+                items: [{
+                    id: '{{ $products->id }}',
+                    name: '{{ $products->name }}',
+                    category: '{{ $products->category }}',
+                    price: {{ $products->price }}
+                }]
+            });
         });
-    });
-</script>
+    </script>
 @endif
-<!-- Template Javascript -->
-<script src="js/main.js"></script>
 
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1996841609387194"
-        crossorigin="anonymous"></script>
-<!-- Check it -->
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1996841609387194" crossorigin="anonymous"></script>
 <ins class="adsbygoogle"
      style="display:block"
      data-ad-client="ca-pub-1996841609387194"
@@ -658,16 +637,6 @@
     (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
 
-<!-- JavaScript Libraries -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="lib/wow/wow.min.js"></script>
-<script src="lib/easing/easing.min.js"></script>
-<script src="lib/waypoints/waypoints.min.js"></script>
-<script src="lib/owlcarousel/owl.carousel.min.js"></script>
-
-<!-- Template Javascript -->
-<script src="js/main.js"></script>
 </body>
 
 </html>

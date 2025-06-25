@@ -34,7 +34,7 @@ Route::get('/store',[NewUserController::class,'store'])->name('store');
 
 Route::get('/contact',[NewUserController::class,'contact'])->name('contact');
 
-Route::get('/testimonials',[NewUserController::class,'testimonial'])->name('testimonial');
+Route::get('/testimonials',[NewUserController::class,'testimonial'])->name('user.testimonial');
 
 Route::get('/blog',[NewUserController::class,'blog'])->name('blog');
 
@@ -66,7 +66,7 @@ Route::post('/payment',[PaymentController::class,'index'])->name('payment');
 
 Route::get('/callback',[PaymentController::class,'callback'])->name('callbackURL');
 
-Route::get('/verify-payment', [PaymentController::class, 'verifyPayment'])->name('verifyPayment');
+//Route::get('/verify-payment', [PaymentController::class, 'verifyPayment'])->name('verifyPayment');
 
 Route::get('/privacy-policy',[NonUserController::class,'privacy_policy'])->name('privacy_policy');
 /* Non User End*/

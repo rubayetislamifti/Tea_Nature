@@ -24,11 +24,17 @@
                 <div class="col-lg-12 wow fadeIn" data-wow-delay="0.5s">
                     <div class="section-title">
                         <p class="fs-5 fw-medium fst-italic text-primary">About Us</p>
-                        <h1 class="display-6">{{isset($about->title)}}</h1>
+                        <h1 class="display-6">
+                            @isset($about->title)
+                                {{ $about->title }}
+                            @endisset
+                        </h1>
                     </div>
                     <div class="row g-3 mb-4">
                         <div class="col-sm-8">
-                            {!! isset($about->description) !!}
+                            @isset($about->description)
+                                {!! $about->description !!}
+                            @endisset
                         </div>
                     </div>
                     <div class="border-top mb-4"></div>
