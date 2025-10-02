@@ -16,6 +16,7 @@ use App\Http\Controllers\User\UddoktapayController;
 use App\Http\Controllers\User\NewUserController;
 use App\Http\Controllers\User\OrderController;
 use App\Http\Controllers\User\PaymentController;
+use App\Http\Controllers\GuestOrderController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -65,6 +66,11 @@ Route::post('/orders/destroy', [OrderController::class, 'destroy'])->name('cart.
 Route::post('/payment',[PaymentController::class,'index'])->name('payment');
 
 Route::get('/callback',[PaymentController::class,'callback'])->name('callbackURL');
+
+Route::get('guest/checkout',[NonUserController::class,'checkout'])->name('guest.checkout');
+Route::post('guest/order',[GuestOrderController::class,'paymentInit'])->name('guest.payment');
+Route::get('guest/order/verify/payment',[GuestOrderController::class,'verify'])->name('guest.payment.verify');
+Route::get('guest/order/cancel',[GuestOrderController::class,'cancel'])->name('guest.payment.cancel');
 
 //Route::get('/verify-payment', [PaymentController::class, 'verifyPayment'])->name('verifyPayment');
 

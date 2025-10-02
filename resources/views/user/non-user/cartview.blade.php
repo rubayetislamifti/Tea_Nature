@@ -57,6 +57,9 @@
                     </table>
                     <div class="row justify-content-end">
                         <div class="col-auto">
+                            <a href="{{route('guest.checkout')}}" class="btn btn-warning checkout-btn">Guest Checkout</a>
+                        </div>
+                        <div class="col-auto">
                             @if(Auth::check())
                                 <a href="{{ route('checkout') }}" class="btn btn-success checkout-btn">Checkout</a>
                             @else

@@ -52,16 +52,23 @@
                     </script>
                 <!-- Prices -->
                 <div class="prices">
-                    @if(Auth::user()->roles =='users')
+                    @if(Auth::check())
+                        @if(Auth::user()->roles =='users')
+                            @if(isset($products->previous_price))
+                                <span class="previous-price">{{$products->previous_price}}৳</span>
+                            @endif<!-- Previous price with strikethrough -->
+                            <span class="new-price">{{$products->price}}৳</span> <!-- New price -->
+                        @else
+                            <p class="mb-4">Quantity Per Carton: <strong>{{$products->cartoonqty}} pcs</strong>
+                            </p>
+                            <!-- Previous price with strikethrough -->
+                            <span class="new-price">Per Carton: {{$products->cartoonprice}}৳</span> <!-- New price -->
+                        @endif
+                    @else
                         @if(isset($products->previous_price))
                             <span class="previous-price">{{$products->previous_price}}৳</span>
                         @endif<!-- Previous price with strikethrough -->
                         <span class="new-price">{{$products->price}}৳</span> <!-- New price -->
-                    @else
-                        <p class="mb-4">Quantity Per Carton: <strong>{{$products->cartoonqty}} pcs</strong>
-                        </p>
-                        <!-- Previous price with strikethrough -->
-                        <span class="new-price">Per Carton: {{$products->cartoonprice}}৳</span> <!-- New price -->
                     @endif
 
                 </div>
