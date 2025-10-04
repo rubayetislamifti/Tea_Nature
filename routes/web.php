@@ -71,7 +71,7 @@ Route::get('guest/checkout',[NonUserController::class,'checkout'])->name('guest.
 Route::post('guest/order',[GuestOrderController::class,'paymentInit'])->name('guest.payment');
 Route::get('guest/order/verify/payment',[GuestOrderController::class,'verify'])->name('guest.payment.verify');
 Route::get('guest/order/cancel',[GuestOrderController::class,'cancel'])->name('guest.payment.cancel');
-
+Route::get('guest/invoice',[GuestOrderController::class,'guestInvoice'])->name('guest.invoice');
 //Route::get('/verify-payment', [PaymentController::class, 'verifyPayment'])->name('verifyPayment');
 
 Route::get('/privacy-policy',[NonUserController::class,'privacy_policy'])->name('privacy_policy');
@@ -313,6 +313,14 @@ Route::prefix('admin')->group(function (){
     Route::post('/updateDelivery',[DashboardController::class,'orderDelivery'])->name('updateDelivery');
 
     Route::get('/depo-orders',[DashboardController::class,'depo_order'])->name('depoOrders');
+
+    Route::get('/guest-orders',[DashboardController::class,'guest_order'])->name('guestOrders');
+
+    Route::post('guest-order',[DashboardController::class,'setDelivary'])->name('setDelivary');
+
+    Route::get('guest-order-tracking',[DashboardController::class,'guestOrderTracking'])->name('guestOrderTracking');
+
+    Route::get('guest/invoice',[DashboardController::class,'guestinvoice'])->name('guestInvoice');
 
     Route::get('/depoDeliveryTracking',[DashboardController::class,'depo_delivery'])->name('depoTracking');
 

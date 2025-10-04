@@ -10,6 +10,7 @@ use App\Models\Admin;
 use App\Models\Blogs;
 use App\Models\Category;
 use App\Models\Contact;
+use App\Models\GuestOrder;
 use App\Models\marqueetext;
 use App\Models\Privacy;
 use App\Models\ProductPage;
@@ -495,6 +496,57 @@ class DashboardController extends Controller
         return view('admin.Order.depo-order',['id'=>$user,'category'=>$order,'products'=>$product,'admins'=>$admin]);
     }
 
+    public function guest_order()
+    {
+        $user = \request('id');
+        $admin = Admin::where('id',$user)->first();
+
+        $order = GuestOrder::where('order_status','pending')
+            ->join('products','products.id','=', 'guest_orders.product_id')
+            ->select('guest_orders.*','products.id as product_id','products.name as product_name')
+            ->get();
+
+        return view('admin.Order.guest-order',['id'=>$admin,'order'=>$order]);
+    }
+
+    public function setDelivary(Request $request)
+    {
+        $data = $request->validate([
+            'delivary_date'=>'required|date'
+        ]);
+
+        $data['order_status'] = 'approved';
+
+        GuestOrder::where('invoice_id',$request->input('invoice_id'))->update($data);
+        return redirect()->back();
+    }
+
+    public function guestOrderTracking()
+    {
+        $user = \request('id');
+        $admin = Admin::where('id',$user)->first();
+
+        $order = GuestOrder::where('order_status','approved')
+            ->join('products','products.id','=', 'guest_orders.product_id')
+            ->select('guest_orders.*','products.id as product_id','products.name as product_name')
+            ->get();
+
+        return view('admin.Order.guest-Tracking',['id'=>$admin,'order'=>$order]);
+    }
+
+    public function guestinvoice(Request $request)
+    {
+        $invoice = $request->query('invoice');
+
+        $product = GuestOrder::where('invoice_id',$invoice)
+            ->join('products','products.id','=', 'guest_orders.product_id')
+            ->select('guest_orders.*','products.id as product_id','products.name as product_name')
+            ->get();
+
+        $details = GuestOrder::where('invoice_id',$invoice)->first();
+
+        return view('admin.invoice',['product'=>$product,'details'=>$details]);
+    }
     public function update_delivary(Request $request)
     {
         DB::table('orders')->where('invoice_id',$request->input('prod_id'))->update([

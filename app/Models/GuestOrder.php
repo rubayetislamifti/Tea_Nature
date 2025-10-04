@@ -12,6 +12,8 @@ class GuestOrder extends Model
         'phone',
         'address',
         'city',
+        'order_status',
+        'delivary_date',
         'zip',
         'amount',
         'quantity',

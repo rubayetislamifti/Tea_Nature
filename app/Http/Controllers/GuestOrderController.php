@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\GuestOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Session;
 
 class GuestOrderController extends Controller
 {
@@ -121,7 +123,9 @@ class GuestOrderController extends Controller
                     'product_id'=>$response->json(['metadata','product_id'])
                 ]);
 
-                return redirect()->route('invoice', ['id' => $data['invoice_id']]);
+                Session::forget('cart');
+
+                return redirect()->route('guest.invoice',['invoice_id'=>$data['invoice_id']]);
             }
         }
         catch (\Exception $e) {
@@ -131,5 +135,19 @@ class GuestOrderController extends Controller
 
     public function cancel(Request $request){
         return 'nthg';
+    }
+
+    public function guestInvoice(Request $request)
+    {
+        $guest = GuestOrder::where('invoice_id',$request->query('invoice_id'))->first();
+        $product = GuestOrder::where('invoice_id',$request->query('invoice_id'))
+        ->join('products','guest_orders.product_id','=','products.id')
+        ->select('guest_orders.*','products.*')
+        ->get();
+
+        $userShipping = DB::table('shipping_charges')->where('roles', 'users')->where('places', 'Dhaka')->first();
+        $userShippingOutside = DB::table('shipping_charges')->where('roles', 'users')->where('places', 'Outside Dhaka')->first();
+
+        return view('user.guestInvoice',['guest'=>$guest,'products'=>$product,'delivaryDhaka'=>$userShipping,'delivaryOutside'=>$userShippingOutside]);
     }
 }
