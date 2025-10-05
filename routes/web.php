@@ -74,7 +74,7 @@ Route::get('guest/order/cancel',[GuestOrderController::class,'cancel'])->name('g
 Route::get('guest/invoice',[GuestOrderController::class,'guestInvoice'])->name('guest.invoice');
 //Route::get('/verify-payment', [PaymentController::class, 'verifyPayment'])->name('verifyPayment');
 
-Route::get('/privacy-policy',[NonUserController::class,'privacy_policy'])->name('privacy_policy');
+//Route::get('/privacy-policy',[NonUserController::class,'privacy_policy'])->name('privacy_policy');
 /* Non User End*/
 
 /* Verification Start*/
@@ -237,7 +237,7 @@ Route::post( 'webhook', [UddoktapayController::class, 'webhook'] )->name( 'uddok
 Route::prefix('admin')->group(function (){
    Route::get('/login',[LoginController::class,'registerPage'])->name('admin.login');
 
-    Route::post('/login', [LoginController::class, 'loginController'])->name('admin.login');
+    Route::post('/login', [LoginController::class, 'loginController'])->name('adminLogin');
 
 
     Route::get('/profile',[ProfileController::class,'index'])->name('profile');

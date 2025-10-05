@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 
 class GuestOrderController extends Controller
 {
@@ -38,6 +39,7 @@ class GuestOrderController extends Controller
                 'amount' => 'required',
                 'paymentMethod'  => 'required|in:pay,COD',
             ]);
+//            dd($data);
             $cart = session()->get('cart');
 
             if ($data['paymentMethod'] == 'pay') {
@@ -78,6 +80,30 @@ class GuestOrderController extends Controller
                 if ($response->successful()){
                     return redirect()->away($response->json('payment_url'));
                 }
+            }
+            else{
+                $invoice = Str::random(16);
+                foreach ($cart as $item) {
+                    GuestOrder::create([
+                        'name' => $data['name'],
+                        'email' => $data['email'],
+                        'phone' => $data['phone'],
+                        'address' => $data['address'],
+                        'city' => $data['city'],
+                        'zip' => $data['zip'],
+                        'amount' => $data['amount'],
+                        'quantity' => $item['quantity'],
+                        'payment_method' => 'COD',
+                        'sender_number' => null,
+                        'status' => 'pending',
+                        'transaction_id' => null,
+                        'invoice_id' => $invoice,
+                        'product_id' => $item['product_id']
+                    ]);
+                }
+
+                Session::forget('cart');
+                return redirect()->route('guest.invoice',['invoice_id'=>$invoice]);
             }
         }
         catch (\Exception $e) {
