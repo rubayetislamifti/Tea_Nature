@@ -925,6 +925,7 @@ class DashboardController extends Controller
     public function updateImage(Request $request, $id)
     {
         $testimonial = SliderImg::findOrFail($id);
+//        dd($testimonial);
         $img = $request->file('description');
 
         if ($img) {

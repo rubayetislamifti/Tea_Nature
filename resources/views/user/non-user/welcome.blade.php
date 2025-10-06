@@ -146,47 +146,4 @@
         </div>
     </div>
 </div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.add-to-cart-btn').forEach(button => {
-        button.addEventListener('click', function(event) {
-            const form = button.closest('form');
-            const productId = form.querySelector('input[name="product_id"]').value;
-            const quantity = form.querySelector('input[name="quantity"]').value;
-            const productName = button.closest('.store-item').querySelector('h4.mb-3').textContent;
-            const price = parseFloat(button.closest('.store-item').querySelector('h4.text-primary').getAttribute('data-price'));
-
-            // Send event to Google Analytics
-            gtag('event', 'add_to_cart', {
-                currency: 'BDT', // Change to your currency
-                value: price * quantity, // Total value based on quantity
-                items: [{
-                    item_id: productId,
-                    item_name: productName,
-                    quantity: parseInt(quantity, 10),
-                    price: price,
-                }]
-            });
-
-            //  alert('Add to Cart event sent to Google Analytics: ' + JSON.stringify({
-            //     currency: 'BDT',
-            //     value: price * quantity,
-            //     items: [{
-            //         item_id: productId,
-            //         item_name: productName,
-            //         quantity: parseInt(quantity, 10),
-            //         price: price,
-            //     }]
-            // }));
-        });
-    });
-});
-</script>
-<!-- Store End -->
-
-
-
-
-
 @endsection

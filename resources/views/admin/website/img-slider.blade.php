@@ -142,7 +142,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form id="updateForm" method="post" action="" enctype="multipart/form-data">
+                            <form id="updateForm" method="post" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
                                 <div class="mb-3">
@@ -198,7 +198,7 @@
                             const name = this.getAttribute('data-name');
 
 
-                            updateForm.action = '/slider/update/' + id;
+                            updateForm.action = '/admin/slider/update/' + id;
                             updateForm.querySelector('#updateName').value = name;
 
 

@@ -21,13 +21,12 @@
 
     <link rel="canonical" href="https://www.teanatureltd.com/">
     <meta name="robots" content="index, follow">
-
     <meta property="og:title" content="Tea Nature">
     <meta property="og:description" content="Welcome To Official Website Of TeanaturE Limited. Discover the finest selection of teas at TeaNature. From green tea and black tea to herbal blends and matcha, we offer a variety of premium teas to suit every taste. Learn about tea brewing, explore tea recipes, and enjoy the health benefits of our carefully curated teas. Shop now for organic, loose leaf, and specialty teas. ">
-    <meta property="og:image" content="https://www.teanatureltd.com/storage/slider/1720944905.jpg">
+{{--    <meta property="og:image" content="https://www.teanatureltd.com/">--}}
     <meta property="og:url" content="https://www.teanatureltd.com/">
 
-    <link rel="ads.txt" type="text/plain" href="https://www.teanatureltd.com/public/ads.txt">
+{{--    <link rel="ads.txt" type="text/plain" href="https://www.teanatureltd.com/public/ads.txt">--}}
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="TeaNaturE - Finest Selection of Teas">
@@ -36,71 +35,7 @@
     <meta name="twitter:site" content="@TeaNaturE">
     <meta name="twitter:creator" content="@Sheikh_Md_Rubayet_Islam_Ifti">
 
-    @if(isset($products))
-        <!-- Facebook and Messenger Meta Tags -->
-        <meta property="og:title" content="{{$products->name}}" />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="{{ url()->current() }}" />
-        <meta property="og:image" content="{{asset('storage/'. $products->image)}}" />
-        <meta property="og:description" content="{{ $products->description }}" />
-        <meta property="og:site_name" content="TeanaturE" />
-        <meta property="og:locale" content="en_US" />
 
-        <!-- Twitter Meta Tags -->
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="{{$products->name}}" />
-        <meta name="twitter:description" content="{{ $products->description }}" />
-        <meta name="twitter:image" content="{{asset('storage/'. $products->image)}}" />
-        <meta name="twitter:site" content="@TeanaturE" />
-        <meta name="twitter:creator" content="@Sheikh_Md_Rubayet_Islam_Ifti" />
-    @endif
-
-    <script type="application/ld+json">
-        {
-          "@context": "https://schema.org/",
-          "@type": "Organization",
-          "name": "TeaNaturE",
-          "url": "https://www.teanatureltd.com/",
-          "logo": "https://www.teanatureltd.com/storage/slider/1720019886.jpg",
-          "sameAs": [
-            "https://www.facebook.com/TeaNaturE",
-          ],
-          "contactPoint": {
-            "@type": "ContactPoint",
-            "telephone": "+8801955-000087",
-            "contactType": "Customer Service"
-          }
-        }
-    </script>
-
-
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1996841609387194"
-            crossorigin="anonymous"></script>
-    <!--<link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">-->
-
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','GTM-MLFDLBPL');</script>
-    <!-- End Google Tag Manager -->
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MLFDLBPL"
-                      height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
-
-    <script async src="https://fundingchoicesmessages.google.com/i/pub-1996841609387194?ers=1" nonce="FX3DZbFtaXM10kZasxDrVw"></script><script nonce="FX3DZbFtaXM10kZasxDrVw">(function() {function signalGooglefcPresent() {if (!window.frames['googlefcPresent']) {if (document.body) {const iframe = document.createElement('iframe'); iframe.style = 'width: 0; height: 0; border: none; z-index: -1000; left: -1000px; top: -1000px;'; iframe.style.display = 'none'; iframe.name = 'googlefcPresent'; document.body.appendChild(iframe);} else {setTimeout(signalGooglefcPresent, 0);}}}signalGooglefcPresent();})();</script>
-
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RLP6WBMWKY"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'G-RLP6WBMWKY');
-    </script>
 
 
     <!-- Favicon -->
@@ -450,7 +385,10 @@
 </div>
 <!-- Spinner End -->
 
-<marquee behavior="scroll" direction="left" style="font-family: Space Grotesk, sans-serif; color:@if(isset($text->color)) {{$text->color}} @endif ">@if(isset($text->text)) {{$text->text}} @endif
+<marquee behavior="scroll" direction="left" style="font-family: Space Grotesk, sans-serif; color:@if(isset($text->color)) {{$text->color}} @endif ">
+    @if(isset($text->text))
+        {{$text->text}}
+    @endif
 </marquee>
 
 <!-- Navbar Start -->
@@ -523,19 +461,21 @@
         <div class="row g-5">
             <div class="col-lg-4 col-md-6">
                 <h4 class="text-primary mb-4">Our Office</h4>
-                <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>@if(isset($contact->address)) {{$contact->address}} @endif</p>
-                <p class="mb-2"><i class="fa fa-phone-alt text-primary me-3"></i>@if(isset($contact->fphone)) {{$contact->fphone}} @endif</p>
-                <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>@if(isset($contact->femail)) {{$contact->femail}} @endif</p>
-                {{--                <div class="d-flex pt-3">--}}
-                {{--                    <a class="btn btn-square btn-primary rounded-circle me-2" href=""><i--}}
-                {{--                            class="fab fa-twitter"></i></a>--}}
-                {{--                    <a class="btn btn-square btn-primary rounded-circle me-2" href=""><i--}}
-                {{--                            class="fab fa-facebook-f"></i></a>--}}
-                {{--                    <a class="btn btn-square btn-primary rounded-circle me-2" href=""><i--}}
-                {{--                            class="fab fa-youtube"></i></a>--}}
-                {{--                    <a class="btn btn-square btn-primary rounded-circle me-2" href=""><i--}}
-                {{--                            class="fab fa-linkedin-in"></i></a>--}}
-                {{--                </div>--}}
+                <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>
+                    @if(isset($contact->address))
+                        {{$contact->address}}
+                    @endif
+                </p>
+                <p class="mb-2"><i class="fa fa-phone-alt text-primary me-3"></i>
+                    @if(isset($contact->fphone))
+                        {{$contact->fphone}}
+                    @endif
+                </p>
+                <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>
+                    @if(isset($contact->femail))
+                        {{$contact->femail}}
+                    @endif
+                </p>
             </div>
             <div class="col-lg-4 col-md-6">
                 <h4 class="text-primary mb-4">Quick Links</h4>
@@ -606,36 +546,6 @@
 <!-- Site-wide JS -->
 <script src="{{ asset('user/js/main.js') }}"></script>
 
-<!-- Google Analytics item-view event -->
-@if(isset($products))
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            gtag('event', 'view_item', {
-                event_category: 'Products',
-                event_label: '{{ $products->name }}',
-                value: {{ $products->price }},
-                items: [{
-                    id: '{{ $products->id }}',
-                    name: '{{ $products->name }}',
-                    category: '{{ $products->category }}',
-                    price: {{ $products->price }}
-                }]
-            });
-        });
-    </script>
-@endif
-
-<!-- Google AdSense -->
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1996841609387194" crossorigin="anonymous"></script>
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-1996841609387194"
-     data-ad-slot="6152277788"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-    (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
 
 </body>
 
