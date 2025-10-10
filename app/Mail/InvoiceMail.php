@@ -28,28 +28,79 @@ class InvoiceMail extends Mailable
      */
     public function build()
     {
-        $products = Order::where('invoice_id', $this->order->invoice_id)
-            ->join('products', 'orders.product_id', '=', 'products.id')
-            ->select('orders.*','products.*', 'products.name as product_name','products.price as product_price','orders.price as total_price')
-            ->get();
-        $user = Order::where('invoice_id', $this->order->invoice_id)
-            ->join('users', 'orders.user_id', '=', 'users.id')
-            ->select('orders.*','users.*')
-            ->first();
-//        dd($products);
-        $usershippingDhaka = DB::table('shipping_charges')->where('roles', 'users')->where('places', 'Dhaka')->first();
-        $usershippingOutDhaka = DB::table('shipping_charges')->where('roles', 'users')->where('places', 'Outside Dhaka')->first();
-        $userShipping = DB::table('shipping_charges')->where('roles', 'depo')->where('places', 'Dhaka')->first();
-        $userShippingOutside = DB::table('shipping_charges')->where('roles', 'depo')->where('places', 'Outside Dhaka')->first();
-        return $this->view('user.emails.invoice')
-            ->with([
-                'order' => $this->order,
-                'products' => $products,
-                'user' => $user,
-                'userDhaka'=>$usershippingDhaka,
-                'userOut'=>$usershippingOutDhaka,
-                'depoShip'=>$userShipping,
-                'depoShipOut'=>$userShippingOutside
-            ]);
+        // Detect if it's a GuestOrder or User Order
+        if ($this->order instanceof \App\Models\GuestOrder) {
+
+            // 🟢 GUEST ORDER HANDLING
+            $products = \App\Models\GuestOrder::where('invoice_id', $this->order->invoice_id)
+                ->join('products', 'guest_orders.product_id', '=', 'products.id')
+                ->select(
+                    'guest_orders.*',
+                    'products.name as product_name',
+                    'products.price as product_price'
+                )
+                ->get();
+
+            $user = (object)[
+                'name' => $this->order->name,
+                'email' => $this->order->email,
+                'phone' => $this->order->phone,
+                'address' => $this->order->address,
+                'city' => $this->order->city,
+            ];
+
+            // Optional: shipping charges (same logic as user)
+            $userDhaka = DB::table('shipping_charges')->where('roles', 'users')->where('places', 'Dhaka')->first();
+            $userOut = DB::table('shipping_charges')->where('roles', 'users')->where('places', 'Outside Dhaka')->first();
+            $depoShip = DB::table('shipping_charges')->where('roles', 'depo')->where('places', 'Dhaka')->first();
+            $depoShipOut = DB::table('shipping_charges')->where('roles', 'depo')->where('places', 'Outside Dhaka')->first();
+
+            return $this->view('user.emails.invoice')
+                ->with([
+                    'order' => $this->order,
+                    'products' => $products,
+                    'user' => $user,
+                    'userDhaka' => $userDhaka,
+                    'userOut' => $userOut,
+                    'depoShip' => $depoShip,
+                    'depoShipOut' => $depoShipOut,
+                    'isGuest' => true,
+                ]);
+        } else {
+            // 🟢 LOGGED-IN USER ORDER HANDLING
+            $products = \App\Models\Order::where('invoice_id', $this->order->invoice_id)
+                ->join('products', 'orders.product_id', '=', 'products.id')
+                ->select(
+                    'orders.*',
+                    'products.*',
+                    'products.name as product_name',
+                    'products.price as product_price',
+                    'orders.price as total_price'
+                )
+                ->get();
+
+            $user = \App\Models\Order::where('invoice_id', $this->order->invoice_id)
+                ->join('users', 'orders.user_id', '=', 'users.id')
+                ->select('orders.*', 'users.*')
+                ->first();
+
+            $userDhaka = DB::table('shipping_charges')->where('roles', 'users')->where('places', 'Dhaka')->first();
+            $userOut = DB::table('shipping_charges')->where('roles', 'users')->where('places', 'Outside Dhaka')->first();
+            $depoShip = DB::table('shipping_charges')->where('roles', 'depo')->where('places', 'Dhaka')->first();
+            $depoShipOut = DB::table('shipping_charges')->where('roles', 'depo')->where('places', 'Outside Dhaka')->first();
+
+            return $this->view('user.emails.invoice')
+                ->with([
+                    'order' => $this->order,
+                    'products' => $products,
+                    'user' => $user,
+                    'userDhaka' => $userDhaka,
+                    'userOut' => $userOut,
+                    'depoShip' => $depoShip,
+                    'depoShipOut' => $depoShipOut,
+                    'isGuest' => false,
+                ]);
+        }
     }
+
 }

@@ -170,8 +170,8 @@
                                 <h6 class="mb-3">Payment</h6>
                                 <div class="form-group">
                                     <div class="custom-control custom-radio">
-                                        <input type="radio" class="custom-control-input" name="paymentMethod" value="pay" id="bkash">
-                                        <label class="custom-control-label" for="bkash">Pay Online</label>
+{{--                                        <input type="radio" class="custom-control-input" name="paymentMethod" value="pay" id="bkash">--}}
+                                        <label class="custom-control-label" for="bkash">Pay Online (Service Currently Disable)</label>
                                     </div>
                                 </div>
                                 <div class="form-group">

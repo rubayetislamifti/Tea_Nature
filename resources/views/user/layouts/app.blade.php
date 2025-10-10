@@ -83,6 +83,23 @@
         li {
             font-family: 'Space Grotesk', sans-serif;
         }
+        #cart-count {
+            font-size: 0.75rem;
+            padding: 4px 6px;
+            border-radius: 50%;
+        }
+        .cart-badge {
+            top: 0;
+            left: 70%;
+            background-color: #7DBE42; /* Green color similar to your example */
+            color: #fff;
+            border-radius: 50%;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 3px 6px;
+            line-height: 1;
+            border: 2px solid #fff; /* White border for clean look */
+        }
 
         .discount-overlay {
             position: absolute;
@@ -445,7 +462,14 @@
 
                 </div>
                 <div class="border-start ps-4">
-                    <a href="{{route('cart.view')}}" class="btn btn-sm p-0"><i class="fa-solid fa-cart-shopping"><span class="badge bg-primary"></span></i></a>
+                    <a href="{{ route('cart.view') }}" class="btn btn-sm p-0 position-relative">
+                        <i class="fa-solid fa-cart-shopping" style="font-size: 22px; color: #333;"></i>
+                        <span id="cart-count"
+                              class="cart-badge position-absolute translate-middle">
+                        {{ session('cart') ? count(session('cart')) : 0 }}
+                    </span>
+                    </a>
+
                 </div>
             </div>
         </nav>

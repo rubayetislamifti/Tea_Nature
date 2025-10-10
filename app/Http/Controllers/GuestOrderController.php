@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\InvoiceMail;
 use App\Models\GuestOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 
@@ -101,7 +103,24 @@ class GuestOrderController extends Controller
                         'product_id' => $item['product_id']
                     ]);
                 }
+                $orderDetails = GuestOrder::where('invoice_id', $invoice)->first();
 
+
+                $adminEmails = DB::table('admins')->pluck('email')->toArray();
+
+
+                $guestEmail = $data['email'];
+
+                if ($guestEmail && filter_var($guestEmail, FILTER_VALIDATE_EMAIL)) {
+
+                    Mail::to($guestEmail)->send(new InvoiceMail($orderDetails));
+
+
+                    $recipients = array_unique(array_merge($adminEmails, ['rubayetislam16@gmail.com']));
+                    foreach ($recipients as $email) {
+                        Mail::to($email)->send(new InvoiceMail($orderDetails));
+                    }
+                }
                 Session::forget('cart');
                 return redirect()->route('guest.invoice',['invoice_id'=>$invoice]);
             }
