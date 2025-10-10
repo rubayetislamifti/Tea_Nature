@@ -23,7 +23,7 @@
     <meta name="robots" content="index, follow">
     <meta property="og:title" content="Tea Nature">
     <meta property="og:description" content="Welcome To Official Website Of TeanaturE Limited. Discover the finest selection of teas at TeaNature. From green tea and black tea to herbal blends and matcha, we offer a variety of premium teas to suit every taste. Learn about tea brewing, explore tea recipes, and enjoy the health benefits of our carefully curated teas. Shop now for organic, loose leaf, and specialty teas. ">
-{{--    <meta property="og:image" content="https://www.teanatureltd.com/">--}}
+    <meta property="og:image" content="https://www.teanatureltd.com/1759818042.jpg">
     <meta property="og:url" content="https://www.teanatureltd.com/">
 
 {{--    <link rel="ads.txt" type="text/plain" href="https://www.teanatureltd.com/public/ads.txt">--}}
@@ -31,7 +31,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="TeaNaturE - Finest Selection of Teas">
     <meta name="twitter:description" content="Discover the finest selection of teas at TeaNature. From green tea and black tea to herbal blends and matcha, we offer a variety of premium teas to suit every taste. Learn about tea brewing, explore tea recipes, and enjoy the health benefits of our carefully curated teas. Shop now for organic, loose leaf, and specialty teas.">
-    <meta name="twitter:image" content="https://www.teanatureltd.com/storage/slider/1720944905.jpg">
+    <meta name="twitter:image" content="https://www.teanatureltd.com/1759818042.jpg">
     <meta name="twitter:site" content="@TeaNaturE">
     <meta name="twitter:creator" content="@Sheikh_Md_Rubayet_Islam_Ifti">
 
