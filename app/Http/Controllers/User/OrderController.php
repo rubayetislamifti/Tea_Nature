@@ -65,7 +65,7 @@ class OrderController extends Controller
         else
             if (isset($cart[$productId])) {
                 $cart[$productId]['quantity'] += $quantity;
-                $cart[$productId]['total_price'] = $cart[$productId]['quantity'] * $product->cartoonprice;
+                $cart[$productId]['total_price'] = $cart[$productId]['quantity'] * $product->price;
             } else {
                 $cart[$productId] = [
                     'product_id' => $productId,
