@@ -102,9 +102,42 @@ class OrderController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        //
+        $productId = $request->input('product_id');
+        $quantity = (int)$request->input('quantity', 1);
+
+        $cart = session()->get('cart', []);
+
+        if (!isset($cart[$productId])) {
+            return response()->json(['success' => false, 'message' => 'Product not found in cart.']);
+        }
+
+        $product = Products::findOrFail($productId);
+
+        // Determine correct price
+        if (Auth::check()) {
+            $price = Auth::user()->roles === 'depo' ? $product->cartoonprice : $product->price;
+        } else {
+            $price = $product->price;
+        }
+
+        // Update quantity and total price
+        $cart[$productId]['quantity'] = $quantity;
+        $cart[$productId]['total_price'] = $price * $quantity;
+
+        // Save cart
+        session()->put('cart', $cart);
+
+        // Calculate overall total
+        $totalCartPrice = collect($cart)->sum('total_price');
+
+        return response()->json([
+            'success' => true,
+            'cart' => $cart,
+            'total_cart_price' => $totalCartPrice,
+            'updated_item' => $cart[$productId],
+        ]);
     }
 
     /**

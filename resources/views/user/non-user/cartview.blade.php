@@ -39,13 +39,18 @@
                         </thead>
                         <tbody>
                         @foreach(Session::get('cart') as $item)
-                            <tr>
+                            <tr data-product-id="{{ $item['product_id'] }}">
                                 <td>{{ $item['name'] }}</td>
-                                <td>{{ $item['quantity'] }}</td>
-                                <td class="total-price">{{ $item['total_price'] }}</td>
-
                                 <td>
-                                    <form action="{{ route('cart.remove') }}" method="POST">
+                                    <input type="number"
+                                           value="{{ $item['quantity'] }}"
+                                           min="1"
+                                           class="form-control quantity-input"
+                                           style="width:80px; text-align:center;">
+                                </td>
+                                <td class="total-price">{{ $item['total_price'] }}</td>
+                                <td>
+                                    <form action="{{ route('cart.remove') }}" method="POST" style="display:inline;">
                                         @csrf
                                         <input type="hidden" name="product_id" value="{{ $item['product_id'] }}">
                                         <button type="submit" class="btn btn-danger">Remove</button>
@@ -55,6 +60,7 @@
                         @endforeach
                         </tbody>
                     </table>
+
                     <div class="row justify-content-end">
                         <div class="col-auto">
                             @if(!Auth::check())
@@ -73,6 +79,7 @@
                     <p>Your cart is empty.</p>
                 @endif
 
+
             </div>
         </div>
     </div>
@@ -82,32 +89,60 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const quantityInputs = document.querySelectorAll('.quantity');
-        const totalPrices = document.querySelectorAll('.total-price');
-        const updateButtons = document.querySelectorAll('.update-btn');
-        const deleteButtons = document.querySelectorAll('.delete-btn');
         const totalCartPrice = document.querySelector('.total-cart-price');
-
-        updateTotalCartPrice();
-
-        updateButtons.forEach((button, index) => {
-            button.addEventListener('click', () => {
-                const quantity = parseInt(quantityInputs[index].value);
-                const price = 10; // Replace with your actual product price
-                const totalPrice = quantity * price;
-                totalPrices[index].textContent = `৳৳{totalPrice}`;
-                updateTotalCartPrice();
-            });
-        });
 
         function updateTotalCartPrice() {
             let total = 0;
-            totalPrices.forEach(price => {
-                total += parseInt(price.textContent.replace('৳', ''));
+            document.querySelectorAll('.total-price').forEach(price => {
+                total += parseFloat(price.textContent.replace('৳', '').trim()) || 0;
             });
-            totalCartPrice.textContent = `Total Price: ৳${total}`;
+            if (totalCartPrice) {
+                totalCartPrice.textContent = `Total Price: ৳${total.toFixed(2)}`;
+            }
         }
+
+        document.querySelectorAll('.quantity-input').forEach(input => {
+            input.addEventListener('change', function () {
+                const row = this.closest('tr');
+                const productId = row.dataset.productId;
+                const quantity = parseInt(this.value);
+                const priceCell = row.querySelector('.total-price');
+
+                if (quantity < 1) {
+                    alert('Quantity must be at least 1');
+                    this.value = 1;
+                    return;
+                }
+
+                // Send update request
+                fetch('{{ route("cart.update") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        product_id: productId,
+                        quantity: quantity
+                    })
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            const updatedItem = data.updated_item;
+                            priceCell.textContent = `৳${updatedItem.total_price}`;
+                            updateTotalCartPrice();
+                        } else {
+                            alert('Error updating cart.');
+                        }
+                    })
+                    .catch(err => console.error(err));
+            });
+        });
+
+        updateTotalCartPrice();
     });
 </script>
+
 
 @endsection

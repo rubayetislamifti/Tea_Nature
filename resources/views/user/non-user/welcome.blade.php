@@ -141,7 +141,7 @@
 
 
             <div class="col-12 text-center wow fadeInUp" data-wow-delay="0.1s">
-                <a href="{{route('store')}}" class="btn btn-primary rounded-pill py-3 px-5">View More Products</a>
+                <a href="{{route('store')}}" class="btn btn-warning rounded-pill py-3 px-5">View More Products</a>
             </div>
         </div>
     </div>

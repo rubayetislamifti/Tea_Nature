@@ -61,6 +61,8 @@ Route::post('/orders',[OrderController::class,'store'])->name('user.create-order
 
 Route::get('/orders', [OrderController::class, 'index'])->name('cart.view');
 
+Route::post('orders/update',[OrderController::class,'update'])->name('cart.update');
+
 Route::post('/orders/destroy', [OrderController::class, 'destroy'])->name('cart.remove');
 
 Route::post('/payment',[PaymentController::class,'index'])->name('payment');

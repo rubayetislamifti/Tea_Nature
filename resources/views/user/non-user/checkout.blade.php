@@ -101,13 +101,17 @@
                                 @if(!empty($cart))
                                     @foreach($cart as $item)
                                         <div class="d-flex justify-content-between">
-                                            <p>{{ $item['name'] ?? 'Item' }}</p>
-                                            <p>{{ (float)($item['total_price'] ?? 0) }}৳</p>
+                                            <p>
+                                                {{ $item['name'] ?? 'Item' }}
+                                                <span class="text-muted">× {{ $item['quantity'] ?? 1 }}</span>
+                                            </p>
+                                            <p>{{ number_format((float)($item['total_price'] ?? 0), 0) }}৳</p>
                                         </div>
                                     @endforeach
                                 @else
                                     <p class="text-muted mb-0">No items in cart.</p>
                                 @endif
+
                             </div>
 
                             <div class="border-bottom pt-3 pb-2">
