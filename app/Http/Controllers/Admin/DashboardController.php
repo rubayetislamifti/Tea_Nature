@@ -543,9 +543,18 @@ class DashboardController extends Controller
             ->select('guest_orders.*','products.id as product_id','products.name as product_name')
             ->get();
 
+        $userShipping = DB::table('shipping_charges')->where('roles', 'users')->where('places', 'Dhaka')->first();
+        $userShippingOutside = DB::table('shipping_charges')->where('roles', 'users')->where('places', 'Outside Dhaka')->first();
+
+//        dd($userShipping, $userShippingOutside);
         $details = GuestOrder::where('invoice_id',$invoice)->first();
 
-        return view('admin.invoice',['product'=>$product,'details'=>$details]);
+        return view('admin.invoice',[
+            'product'=>$product,
+            'details'=>$details,
+            'shipping'=>$userShipping,
+            'shippingOutside' => $userShippingOutside
+            ]);
     }
     public function update_delivary(Request $request)
     {

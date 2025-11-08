@@ -50,6 +50,7 @@
 
     <p><strong>Customer Name:</strong> {{ $user->name }}</p>
     <p><strong>Email:</strong> {{ $user->email ?? 'N/A' }}</p>
+    <p><strong>Phone:</strong> {{ $user->phone ?? 'N/A' }}</p>
     <p><strong>Order ID:</strong> {{ $order->invoice_id }}</p>
     <p><strong>Payment Method:</strong> {{ $order->payment_method }}</p>
 
@@ -59,7 +60,7 @@
         <p><strong>City:</strong> {{ $order->shipping_city }}</p>
     @else
         <p><strong>Address:</strong> {{ $user->address }}</p>
-        <p><strong>City:</strong> {{ $user->city }}</p>
+        <p><strong>City:</strong> {{ $user->city }} - {{ $user->zip }}</p>
     @endif
 
     <h2>Products</h2>

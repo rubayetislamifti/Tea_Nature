@@ -243,7 +243,7 @@
                                     <li class="nav-item"><a class="nav-link" href="{{ route('depoTracking', ['id' => $admins]) }}">Depo Delivery Tracking</a></li>
                                     <li class="nav-item"><a class="nav-link" href="{{ route('depoShippingCharges', ['id' => $admins]) }}">Depo Shipping Price</a></li>
                                     <li class="category-heading">Guest Section</li>
-                                    <li class="nav-item"><a class="nav-link" href="{{ route('guestOrders', ['id' => $admins]) }}">Guest Orders</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{{ route('guestOrders', ['id' => $admins]) }}">Guest Order</a></li>
                                     <li class="nav-item"><a class="nav-link" href="{{ route('guestOrderTracking', ['id' => $admins]) }}">Guest Delivery Tracking</a></li>
                                 </ul>
                             </div>

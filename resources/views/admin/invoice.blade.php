@@ -376,31 +376,58 @@
         </div>
 
         <!-- Totals -->
-        @php
-            $discount = (float)($details->discount ?? 0);
-            $shipping = (float)($details->shipping ?? 0);
-            $tax      = (float)($details->tax ?? 0);
-            $subtotal = max($grand - $discount, 0);
-            $total    = $subtotal + $shipping + $tax;
-        @endphp
+{{--        @php--}}
+{{--            $discount = (float)($details->discount ?? 0);--}}
+{{--            $shipping = (float)($details->shipping ?? 0);--}}
+{{--            $tax      = (float)($details->tax ?? 0);--}}
+{{--            $subtotal = max($grand - $discount, 0);--}}
+{{--            $total    = $subtotal + $shipping + $tax;--}}
+{{--        @endphp--}}
         <div class="section">
             <div class="row justify-content-end">
-                <div class="col-12 col-md-6 col-lg-4">
-                    <div class="totals">
-                        <div class="row-line"><span class="text-muted-2">Subtotal</span><span class="fw-semibold">{{ number_format($grand, 2) }}</span></div>
-                        @if($discount > 0)
-                            <div class="row-line"><span class="text-muted-2">Discount</span><span class="fw-semibold">-{{ number_format($discount, 2) }}</span></div>
-                        @endif
-                        @if($shipping > 0)
-                            <div class="row-line"><span class="text-muted-2">Shipping</span><span class="fw-semibold">{{ number_format($shipping, 2) }}</span></div>
-                        @endif
-                        @if($tax > 0)
-                            <div class="row-line"><span class="text-muted-2">Tax</span><span class="fw-semibold">{{ number_format($tax, 2) }}</span></div>
-                        @endif
-                        <hr class="my-2">
-                        <div class="row-line grand"><span>Total</span><span>{{ number_format($total ?: $grand, 2) }}</span></div>
+
+                @php
+
+                    $subtotal = (float)$grand;
+
+
+                    if (!empty($details->city) && strtolower(trim($details->city)) === 'dhaka') {
+                        $delivery = (float)($shipping->price ?? 0);
+                    } else {
+                        $delivery = (float)($shippingOutside->price ?? 0);
+                    }
+
+
+                    $total = $subtotal + $delivery;
+                @endphp
+
+                <div class="section">
+                    <div class="row justify-content-end">
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <div class="totals">
+                                <div class="row-line">
+                                    <span class="text-muted-2">Subtotal</span>
+                                    <span class="fw-semibold">{{ number_format($subtotal, 2) }}</span>
+                                </div>
+
+                                <div class="row-line">
+                                    <span class="text-muted-2">Delivery Charges</span>
+                                    <span class="fw-semibold">{{ number_format($delivery, 2) }}</span>
+                                </div>
+
+                                <hr class="my-2">
+
+                                <div class="row-line grand">
+                                    <span>Total Amount</span>
+                                    <span>{{ number_format($total, 2) }}</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+
+            </div>
             </div>
         </div>
 

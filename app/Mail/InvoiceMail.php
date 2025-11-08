@@ -47,6 +47,7 @@ class InvoiceMail extends Mailable
                 'phone' => $this->order->phone,
                 'address' => $this->order->address,
                 'city' => $this->order->city,
+                'zip' => $this->order->zip
             ];
 
             // Optional: shipping charges (same logic as user)
