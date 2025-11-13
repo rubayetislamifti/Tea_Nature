@@ -123,7 +123,7 @@
                                 </td>
                                 <td>{{ number_format($totalAmount, 2) }}</td>
                                 <td>
-                                    {{ $first->delivery_date ? \Carbon\Carbon::parse($first->delivery_date)->format('d M, Y') : 'N/A' }}
+                                    {{ $first->delivary_date ? \Carbon\Carbon::parse($first->delivary_date)->format('d M, Y') : 'N/A' }}
                                 </td>
                                 <td>
                                     <span class="badge bg-success text-white">{{ ucfirst($first->order_status) }}</span>
