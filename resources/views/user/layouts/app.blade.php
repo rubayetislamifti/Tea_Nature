@@ -35,9 +35,6 @@
     <meta name="twitter:site" content="@TeaNaturE">
     <meta name="twitter:creator" content="@Sheikh_Md_Rubayet_Islam_Ifti">
 
-
-
-
     <!-- Favicon -->
     <link href="{{asset('user/img/logo.png')}}" rel="icon">
 
