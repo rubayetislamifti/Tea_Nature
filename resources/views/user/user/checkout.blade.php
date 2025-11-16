@@ -63,7 +63,7 @@
                         <input class="form-control" type="text" value="@if(Auth::user()->roles == 'users'){{Auth::user()->customerInfo->address}}@else{{Auth::user()->depoInfo->address}}@endif"  name="address" placeholder="123 Street" required>
                     </div>
                     <div class="col-md-6 form-group">
-                        <label>City</label>
+                        <label>District</label>
                         <input class="form-control" type="text" value="@if(Auth::user()->roles == 'users'){{Auth::user()->customerInfo->distric}}@else{{Auth::user()->depoInfo->city}}@endif"  name="city" placeholder="New York" required>
                     </div>
 
