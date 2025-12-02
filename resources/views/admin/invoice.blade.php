@@ -351,8 +351,9 @@
                     @forelse($product as $i => $row)
                         @php
                             $qty  = (int)($row->quantity ?? 1);
-                            $line = (float)($row->amount ?? 0);
-                            $unit = $qty > 0 ? $line / $qty : $line;
+                            $unit = $row->products_price;
+                            $line = $qty * $unit;
+
                             $grand += $line;
                         @endphp
                         <tr>

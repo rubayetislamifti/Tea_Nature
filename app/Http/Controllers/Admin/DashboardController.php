@@ -540,7 +540,7 @@ class DashboardController extends Controller
 
         $product = GuestOrder::where('invoice_id',$invoice)
             ->join('products','products.id','=', 'guest_orders.product_id')
-            ->select('guest_orders.*','products.id as product_id','products.name as product_name')
+            ->select('guest_orders.*','products.id as product_id','products.name as product_name','products.price as products_price')
             ->get();
 
         $userShipping = DB::table('shipping_charges')->where('roles', 'users')->where('places', 'Dhaka')->first();
