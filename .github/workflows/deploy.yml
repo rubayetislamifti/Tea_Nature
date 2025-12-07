@@ -38,6 +38,6 @@ jobs:
       - name: FTP-Deploy-Action
         uses: SamKirkland/FTP-Deploy-Action@4.3.0
         with:
-          server: ftp.zobayerdev.top
-          username: tnl@teanatureltd.com
-          password: "TAHMNDD5TUIR"
+          server: 72.61.233.228
+          username: teanatureftp
+          password: "PeFiO7osC11plGkZmsKH"

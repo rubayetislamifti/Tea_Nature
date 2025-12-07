@@ -353,7 +353,6 @@
                             $qty  = (int)($row->quantity ?? 1);
                             $unit = $row->products_price;
                             $line = $qty * $unit;
-
                             $grand += $line;
                         @endphp
                         <tr>
