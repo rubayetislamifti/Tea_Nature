@@ -503,8 +503,10 @@ class DashboardController extends Controller
 
         $order = GuestOrder::where('order_status','pending')
             ->join('products','products.id','=', 'guest_orders.product_id')
-            ->select('guest_orders.*','products.id as product_id','products.name as product_name')
+            ->select('guest_orders.*','products.id as product_id','products.name as product_name','products.price as product_price')
             ->get();
+//        dd($order);
+
 
         return view('admin.Order.guest-order',['id'=>$admin,'order'=>$order]);
     }
