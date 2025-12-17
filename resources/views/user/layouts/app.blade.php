@@ -483,18 +483,18 @@
             <div class="col-lg-4 col-md-6">
                 <h4 class="text-primary mb-4">Our Office</h4>
                 <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>
-                    @if(isset($contact->address))
-                        {{$contact->address}}
+                    @if(isset($contacts->address))
+                        {{$contacts->address}}
                     @endif
                 </p>
                 <p class="mb-2"><i class="fa fa-phone-alt text-primary me-3"></i>
-                    @if(isset($contact->fphone))
-                        {{$contact->fphone}}
+                    @if(isset($contacts->fphone))
+                        {{$contacts->fphone}}
                     @endif
                 </p>
                 <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>
-                    @if(isset($contact->femail))
-                        {{$contact->femail}}
+                    @if(isset($contacts->femail))
+                        {{$contacts->femail}}
                     @endif
                 </p>
             </div>

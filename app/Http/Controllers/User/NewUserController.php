@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Contact;
 use App\Models\Customer_Info;
 use App\Models\DepoInfo;
 use App\Models\User;
@@ -26,9 +27,10 @@ class NewUserController extends Controller
         $slider = DB::table('slider_imgs')->inRandomOrder()->take(3)->get();
         $producttext = DB::table('product_pages')->first();
         $storetext = DB::table('store_pages')->first();
+        $contact = Contact::first();
         return view('user.non-user.welcome',[
             'category'=>$category,'product'=>$product,'slider'=>$slider,
-            'prodText'=>$producttext,'stText'=>$storetext]);
+            'prodText'=>$producttext,'stText'=>$storetext,'contacts'=>$contact]);
     }
 
     public function product()
