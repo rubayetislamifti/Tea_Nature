@@ -301,6 +301,8 @@ class DashboardController extends Controller
             'image' => 'sometimes|nullable|image|mimes:jpeg,png,jpg,gif',
         ]);
 
+
+
         try {
             $product = Products::findOrFail($request->input('prod_id'));
 
@@ -312,7 +314,7 @@ class DashboardController extends Controller
                 'stock' => $request->input('stock'),
                 'category' => $request->input('category'),
                 'cartoonqty' => $request->input('cartoonqty'),
-                'cartoonprice' => $request->input('catroonprice'),
+                'cartoonprice'=> $request->cartoonprice,
             ]);
 
 
