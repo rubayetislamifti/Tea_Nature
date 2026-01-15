@@ -349,6 +349,7 @@ class DashboardController extends Controller
     public function delete_product(Request $request)
     {
         $category = $request->input('category');
+//        dd($category);
 
         Products::where('id',$category)->delete();
 

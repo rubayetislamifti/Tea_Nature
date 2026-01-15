@@ -98,7 +98,7 @@
                                         <th>Price</th>
                                         <th>Stock</th>
                                         <th>Cartoon Qty</th>
-                                        <th>Catroon Price</th>
+                                        <th>Cartoon Price</th>
                                         <th>Discount</th>
                                         <th>Update</th>
                                         <th>Delete</th>

@@ -403,6 +403,8 @@
     @if(isset($text->text))
         {{$text->text}}
     @endif
+
+{{--    {{$text->text}}--}}
 </marquee>
 
 <!-- Navbar Start -->
