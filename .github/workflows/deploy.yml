@@ -22,22 +22,46 @@
 #           protocol: ftps
 #           port: 21
 
-name: Deploy project to our server
+#name: Deploy project to our server
+#on:
+#  push:
+#    branches:
+#      - main
+#jobs:
+#  FTP-Deploy-Action:
+#    name: FTP-Deploy-Action
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v2.1.0
+#        with:
+#          fetch-depth: 2
+#      - name: FTP-Deploy-Action
+#        uses: SamKirkland/FTP-Deploy-Action@4.3.0
+#        with:
+#          server: 72.61.233.228
+#          username: teanatureftp
+#          password: "PeFiO7osC11plGkZmsKH"
+name: Deploy via SFTP (SCP)
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
+
 jobs:
-  FTP-Deploy-Action:
-    name: FTP-Deploy-Action
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2.1.0
+      - uses: actions/checkout@v4
+
+      # (Optional) যদি build লাগে (Laravel/React/etc) এখানে build করবেন
+
+      - name: Upload to Hostinger via SFTP (SCP)
+        uses: appleboy/scp-action@v0.1.7
         with:
-          fetch-depth: 2
-      - name: FTP-Deploy-Action
-        uses: SamKirkland/FTP-Deploy-Action@4.3.0
-        with:
-          server: 72.61.233.228
-          username: teanatureftp
-          password: "PeFiO7osC11plGkZmsKH"
+          host: 72.61.233.228       # e.g. 72.61.233.228 or your domain
+          username: teanatureftp   # e.g. teanatureftp বা ssh user
+          key: "PeFiO7osC11plGkZmsKH"    # PRIVATE KEY (-----BEGIN OPENSSH PRIVATE KEY-----)
+          port: 22
+#          source: "./*"                             # project files
+#          target: "/home/USERNAME/domains/YOURDOMAIN/public_html"
+#          overwrite: true
+#          rm: false
