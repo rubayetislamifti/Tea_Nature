@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('transaction_id')->after('payment_method');
             $table->string('invoice_id');
             $table->unsignedBigInteger('product_id')->after('id');
-            $table->foreign('product_id')->references('id')->on('products');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
         });
     }
 
